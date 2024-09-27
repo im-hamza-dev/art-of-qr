@@ -1,24 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import TextToGraphics from './pages/text-to-graphics/text-to-graphics';
+import NoMatch from './pages/no-match/no-match';
+import Configuration from './pages/configuration/configuration';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <header className="App-header">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<TextToGraphics />} />
+          <Route path="/config" element={<Configuration />} />
+          <Route path="*" element={<NoMatch />} />
+        </Routes>
+      </BrowserRouter>
+    </header>
+  </div>
   );
 }
 
