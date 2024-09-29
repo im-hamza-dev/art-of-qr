@@ -26,18 +26,26 @@
     background-color: white;
     border-radius: 10px;
     //   border: 2px solid black;
+    text-align: left;
+
   }
   
   .qr-text-top {
     position: absolute;
     top: 0px; /* Position relative to square height */
     rotate: 180deg;
+    max-width: 200px;
+    overflow: hidden;
+    white-space: pre-line;
   }
   
   .qr-text-bottom {
     position: absolute;
     bottom: 0px; /* Position relative to square height */
     left: 0px;
+    max-width: 200px;
+    overflow: hidden;
+    white-space: pre-line;
   }
   
   .qr-text-left {
@@ -45,6 +53,9 @@
     bottom: 0px; /* Start at the top of the square */
     left: 0px; /* Position relative to square width */
     writing-mode: vertical-rl;
+    max-height: 200px;
+    overflow: hidden;
+    white-space: pre-line;
   }
   
   .qr-text-right {
@@ -52,6 +63,10 @@
     writing-mode: vertical-rl;
     bottom: 0px;
     right: 0px;
+    text-align: right;
+    max-height: 200px;
+    overflow: hidden;
+    white-space: pre-line;
   }
   
   .qr-download-buttons {

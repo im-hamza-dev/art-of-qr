@@ -57,7 +57,7 @@ const TextToGraphics = () => {
         onChange={(e) => setText(e.target.value)}
         placeholder="Enter text"
         className="qr-input"
-        maxLength={15}
+        maxLength={40}
       />
       <div
         ref={qrRef}
