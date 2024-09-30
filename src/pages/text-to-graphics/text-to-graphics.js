@@ -8,7 +8,7 @@ const TextToGraphics = () => {
   const qrRef = useRef();
   const textRef = useRef();
   const [boxSize, setBoxSize] = useState(200); // Default square size
-  const fontFactor = 6;
+  // const fontFactor = 6;
 
   // Function to handle PNG download
   const downloadPng = () => {

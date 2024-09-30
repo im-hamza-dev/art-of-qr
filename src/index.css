@@ -8,6 +8,18 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family:'CustomFont' source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+
+
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('https://font-file-server.vercel.app/font') format('truetype'); /* Add the correct path */
+  font-weight: normal;
+  font-style: normal;
+}
+

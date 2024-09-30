@@ -7,7 +7,7 @@
     flex-direction: column;
     gap: 100px;
   }
-  
+ 
   .qr-input {
     padding: 20px 30px;
     font-size: 25px;
@@ -19,9 +19,11 @@
   
   .qr-box {
     position: relative;
-  
+    font-family: 'CustomFont', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     font-weight: bold;
-    font-family: "Press Start 2P", sans-serif;
+    
     color: black;
     background-color: white;
     border-radius: 10px;
@@ -35,6 +37,7 @@
     top: 0px; /* Position relative to square height */
     rotate: 180deg;
     max-width: 200px;
+    
     overflow: hidden;
     white-space: pre-line;
   }
