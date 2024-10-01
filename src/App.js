@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 function App() {
   const [config, setConfig] = useState({
-    format: 'center'
+    format: 'left'
   })
   return (
     <div className="App">
