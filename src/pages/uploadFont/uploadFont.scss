@@ -1,3 +1,11 @@
+.config-flexContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap:50px
+}
+
 .input-div {
     display: flex;
     flex-direction: column;
@@ -7,8 +15,30 @@
     border-radius: 10px;
     
     width: 300px;
+    min-height: 240px;
     margin: 20px auto;
-    box-shadow: 5px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 26px rgba(0, 0, 0, 0.1);
+    .radio-flex{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      .option{
+        width:80px;
+        font-size: 14px;
+        margin-bottom: 50px;
+        border-radius: 0px;
+        margin:30px 0px;
+        text-align: center;
+        padding: 10px;
+
+        &.selected{
+          background-color: #14283f;
+          color:rgb(116, 142, 167)
+        }
+        }
+    }
+    
   }
   
   .input-field {
@@ -27,7 +57,6 @@
   
   .upload-button {
     padding: 10px 20px;
-    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
@@ -38,7 +67,6 @@
   }
   
   .upload-button:hover {
-    background-color: #45a049;
   }
   .status-message {
     margin-top: 10px;

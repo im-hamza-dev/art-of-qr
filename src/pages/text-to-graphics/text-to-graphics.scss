@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 100px;
+    gap: 20px;
   }
  
   .qr-input {
@@ -40,6 +40,7 @@
     
     overflow: hidden;
     white-space: pre-line;
+    word-wrap: break-word;
   }
   
   .qr-text-bottom {
@@ -49,6 +50,8 @@
     max-width: 200px;
     overflow: hidden;
     white-space: pre-line;
+    word-wrap: break-word;
+
   }
   
   .qr-text-left {
@@ -58,18 +61,21 @@
     writing-mode: vertical-rl;
     max-height: 200px;
     overflow: hidden;
+    word-wrap: break-word;
     white-space: pre-line;
   }
   
   .qr-text-right {
     position: absolute;
     writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    text-align: left;
     bottom: 0px;
     right: 0px;
-    text-align: right;
     max-height: 200px;
     overflow: hidden;
     white-space: pre-line;
+    word-wrap: break-word;
   }
   
   .qr-download-buttons {
@@ -83,6 +89,11 @@
     border-radius: 25px;
     background-color: #649de2;
     color: white;
+    cursor:pointer;
+    &:hover{
+    background-color: #17365c;
+
+    }
   }
 .item-1{
 	position: absolute  ;

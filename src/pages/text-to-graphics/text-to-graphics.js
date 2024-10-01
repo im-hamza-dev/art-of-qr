@@ -2,15 +2,16 @@ import React, { useRef, useState, useEffect } from "react";
 import { toPng, toSvg } from "html-to-image";
 import download from "downloadjs";
 import "./text-to-graphics.scss"; // Import the CSS file
+import { useNavigate } from "react-router-dom";
 
 
-const TextToGraphics = () => {
+const TextToGraphics = ({config}) => {
   const [text, setText] = useState(""); // Default text
   const qrRef = useRef();
   const textRef = useRef();
-  const [boxSize, setBoxSize] = useState(200); // Default square size
-  // const fontFactor = 6;
-
+  const [boxSize, setBoxSize] = useState(260); // Default square size
+  const navigate = useNavigate()
+const spacingBuffer = 20
   // Function to handle PNG download
   const downloadPng = () => {
     if (qrRef.current) {
@@ -44,14 +45,14 @@ const TextToGraphics = () => {
     const textLength = text.length;
     let textWidth = textRef.current.clientWidth;
     // const newSize = Math.max(120, textLength * 30); // Adjust size scaling factor
-    const newSize = textWidth + textRef.current.clientHeight; // Adjust size scaling factor
+    const newSize = textWidth + textRef.current.clientHeight + spacingBuffer; // Adjust size scaling factor
     console.log("height:", newSize, textLength, textRef.current.clientHeight);
     setBoxSize(newSize);
   }, [text]);
 
+
   return (
     <>
-     <p className="item-1">If fonts don’t look right, please refresh the page using Ctrl + F5 for the best experience</p>
       
     <div className="qr-container">
        <h1>8-Bit Pixel Graphic</h1>
@@ -75,7 +76,7 @@ const TextToGraphics = () => {
         <div
           className="qr-text-top"
           style={{
-            left: textRef?.current?.clientHeight || 20,
+            left: textRef?.current?.clientHeight + spacingBuffer || 20,
             // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
           }}
           ref={textRef}
@@ -100,7 +101,7 @@ const TextToGraphics = () => {
           className="qr-text-left"
           style={{
             // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-            bottom: textRef?.current?.clientHeight - 4,
+            bottom: textRef?.current?.clientHeight + spacingBuffer,
           }}
         >
           {text}
@@ -124,6 +125,7 @@ const TextToGraphics = () => {
         </button>
         <button onClick={downloadSvg}>Download as SVG</button>
       </div>
+      <button onClick={()=>{navigate('/config')}}>Config</button>
     </div>
     </>
   );
