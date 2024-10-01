@@ -7,6 +7,7 @@ import axios from "axios";
 
 const TextToGraphics = ({ config }) => {
   const [text, setText] = useState(""); // Default text
+  const [printifyStatus, setPrintifyStatus] = useState(false); // Default text
   const qrRef = useRef();
   const textRef = useRef();
   const [boxSize, setBoxSize] = useState(260); // Default square size
@@ -54,13 +55,15 @@ const TextToGraphics = ({ config }) => {
     if (qrRef.current) {
       toPng(qrRef.current)
         .then(async (dataUrl) => {
+          console.log(dataUrl)
+          let data_ = dataUrl.replace("data:image/png;base64,", "")
           let body = {
-            filename: `${text}.png`,
-            contents: dataUrl,
+            file_name: `${text}.png`,
+            contents: data_,
           };
           try {
             const response = await axios.post(
-              "https://api.printify.com/v1/shops/18282700/uploads/images.json",
+              "https://api.printify.com/v1/uploads/images.json",
               body,
               {
                 headers: {
@@ -70,9 +73,12 @@ const TextToGraphics = ({ config }) => {
                 },
               }
             );
+            setPrintifyStatus(true)
+
             return response.data;
           } catch (error) {
             console.error("Error uploading image:", error);
+            setPrintifyStatus(false)
           }
         })
         .catch((err) => {
@@ -162,6 +168,9 @@ const TextToGraphics = ({ config }) => {
         >
           Config
         </button>
+        {printifyStatus && (
+            <div className="status-message">{'Graphics uploaded to Printify successfully'}</div>
+          )}
       </div>
     </>
   );
