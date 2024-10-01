@@ -3,6 +3,7 @@ import { toPng, toSvg } from "html-to-image";
 import download from "downloadjs";
 import "./text-to-graphics.scss"; // Import the CSS file
 
+
 const TextToGraphics = () => {
   const [text, setText] = useState(""); // Default text
   const qrRef = useRef();
@@ -49,8 +50,11 @@ const TextToGraphics = () => {
   }, [text]);
 
   return (
+    <>
+     <p className="item-1">If fonts don’t look right, please refresh the page using Ctrl + F5 for the best experience</p>
+      
     <div className="qr-container">
-      <h1>8-Bit Pixel Graphic</h1>
+       <h1>8-Bit Pixel Graphic</h1>
       <input
         type="text"
         value={text}
@@ -121,6 +125,7 @@ const TextToGraphics = () => {
         <button onClick={downloadSvg}>Download as SVG</button>
       </div>
     </div>
+    </>
   );
 };
 
