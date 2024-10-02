@@ -24,7 +24,7 @@ const UploadFont = ({ config, setConfig }) => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3001/upload",
+        "https://font-file-server.vercel.app/upload",
        // https://font-file-server.vercel.app
         formData,
         {
