@@ -12,12 +12,61 @@ const TextToGraphics = ({ config }) => {
   const textRef = useRef();
   const [boxSize, setBoxSize] = useState(260); // Default square size
   const navigate = useNavigate();
+  const [fontUrl, setFontUrl] = useState('');
+
   const spacingBuffer = 20;
-  // Function to handle PNG download
-  const downloadPng = () => {
+//
+
+
+  useEffect(() => {
+    // Function to get the last modified time or create a version
+    const fetchFontVersion = async () => {
+      try {
+        // Use Axios to send a HEAD request to get the font metadata
+        const response = await axios.head(
+          'https://cynlnxqqcyuxauxvxcjf.supabase.co/storage/v1/object/public/fonts/user-font.ttf'
+        );
+
+        // Get the 'Last-Modified' header from the response
+        const lastModified = response.headers['last-modified'];
+        const version = Math.floor(Date.now() / 1000); // Convert to timestamp
+
+        // Append the version as a query parameter to the font URL
+        const fontUrlWithVersion = `https://cynlnxqqcyuxauxvxcjf.supabase.co/storage/v1/object/public/fonts/user-font.ttf?v=${version}`;
+
+        setFontUrl(fontUrlWithVersion);
+      } catch (error) {
+        console.error('Error fetching font metadata:', error);
+      }
+    };
+
+    fetchFontVersion();
+  }, []);
+
+  // Dynamically inject the font-face CSS when the font URL is ready
+  useEffect(() => {
+    if (fontUrl) {
+      const styleSheet = document.createElement('style');
+      styleSheet.textContent = `
+        @font-face {
+          font-family: 'CustomFont';
+          src: url('${fontUrl}') format('truetype');
+          font-weight: normal;
+          font-style: normal;
+        }
+      `;
+      document.head.appendChild(styleSheet);
+    }
+  }, [fontUrl]);
+
+
+  
+//
+const downloadPng = () => {
     if (qrRef.current) {
       toPng(qrRef.current)
         .then((dataUrl) => {
+          console.log(dataUrl);
           download(dataUrl, "qr-code-border.png");
         })
         .catch((err) => {
@@ -40,6 +89,7 @@ const TextToGraphics = ({ config }) => {
   };
   // Calculate the box size dynamically based on text length
   useEffect(() => {
+ 
     if (!textRef.current) {
       return;
     }
@@ -50,6 +100,8 @@ const TextToGraphics = ({ config }) => {
     console.log("height:", newSize, textLength, textRef.current.clientHeight);
     setBoxSize(newSize);
   }, [text]);
+  
+
 
   const sendToPrintify = async () => {
     if (qrRef.current) {
@@ -101,10 +153,12 @@ const TextToGraphics = ({ config }) => {
         />
         <div
           ref={qrRef}
+          
           className="qr-box"
           style={{
             height: `${boxSize}px`, // Dynamically set height based on text length
             width: `${boxSize}px`, // Dynamically set width based on text length
+             fontFamily: 'CustomFont' 
           }}
         >
           {/* Top text */}

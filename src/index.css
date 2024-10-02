@@ -16,10 +16,4 @@ code {
 
 
 
-@font-face {
-  font-family: 'CustomFont';
-  src: url('https://font-file-server.vercel.app/font?v=1.0') format('truetype'); /* Add the correct path */
-  font-weight: normal;
-  font-style: normal;
-}
 
