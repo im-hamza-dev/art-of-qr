@@ -12,11 +12,15 @@ const TextToGraphics = ({ config }) => {
   const [boxSize, setBoxSize] = useState(260); // Default square size
   const navigate = useNavigate();
   const spacingBuffer = 20;
-  // Function to handle PNG download
+
+
+
+
   const downloadPng = () => {
     if (qrRef.current) {
       toPng(qrRef.current)
         .then((dataUrl) => {
+          console.log(dataUrl);
           download(dataUrl, "qr-code-border.png");
         })
         .catch((err) => {
@@ -39,6 +43,7 @@ const TextToGraphics = ({ config }) => {
   };
   // Calculate the box size dynamically based on text length
   useEffect(() => {
+ 
     if (!textRef.current) {
       return;
     }
@@ -49,6 +54,8 @@ const TextToGraphics = ({ config }) => {
     console.log("height:", newSize, textLength, textRef.current.clientHeight);
     setBoxSize(newSize);
   }, [text]);
+  
+
 
   const sendToPrintify = async () => {
     if (qrRef.current) {

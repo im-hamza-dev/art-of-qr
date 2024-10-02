@@ -18,7 +18,7 @@ code {
 
 @font-face {
   font-family: 'CustomFont';
-  src: url('https://font-file-server.vercel.app/font?v=1.0') format('truetype'); /* Add the correct path */
+  src: url('https://cynlnxqqcyuxauxvxcjf.supabase.co/storage/v1/object/public/fonts/user-font.ttf') format('truetype'); /* Add the correct path */
   font-weight: normal;
   font-style: normal;
 }
