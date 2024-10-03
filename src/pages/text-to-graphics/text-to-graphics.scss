@@ -1,113 +1,152 @@
 .qr-container {
-    text-align: center;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 20px;
-  }
- 
-  .qr-input {
-    padding: 20px 30px;
-    font-size: 25px;
-    margin-bottom: 20px;
-    border-radius: 25px;
-    color: grey;
-    outline: none;
-  }
-  
-  .qr-box {
-    position: relative;
-    // font-family: 'CustomFont', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-weight: bold;
-    
-    color: black;
-    background-color: white;
-    border-radius: 10px;
-    //   border: 2px solid black;
-    text-align: left;
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
 
-  }
-  
-  .qr-text-top {
-    position: absolute;
-    top: 0px; /* Position relative to square height */
-    rotate: 180deg;
-    max-width: 200px;
-    
-    overflow: hidden;
-    white-space: pre-line;
-    word-wrap: break-word;
-  }
-  
-  .qr-text-bottom {
-    position: absolute;
-    bottom: 0px; /* Position relative to square height */
-    left: 0px;
-    max-width: 200px;
-    overflow: hidden;
-    white-space: pre-line;
-    word-wrap: break-word;
+.qr-input {
+  padding: 20px 30px;
+  font-size: 25px;
+  margin-bottom: 20px;
+  border-radius: 25px;
+  color: grey;
+  outline: none;
+}
 
-  }
-  
-  .qr-text-left {
-    position: absolute;
-    bottom: 0px; /* Start at the top of the square */
-    left: 0px; /* Position relative to square width */
-    writing-mode: vertical-rl;
-    max-height: 200px;
-    overflow: hidden;
-    word-wrap: break-word;
-    white-space: pre-line;
-  }
-  
-  .qr-text-right {
-    position: absolute;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    text-align: left;
-    bottom: 0px;
-    right: 0px;
-    max-height: 200px;
-    overflow: hidden;
-    white-space: pre-line;
-    word-wrap: break-word;
-  }
-  
-  .qr-download-buttons {
-    margin-top: 20px;
-  }
-  
-  button {
-    margin-right: 10px;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
-    background-color: #649de2;
-    color: white;
-    cursor:pointer;
-    &:hover{
+.qr-box {
+  position: relative;
+  // font-family: 'CustomFont', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: bold;
+
+  color: black;
+  background-color: white;
+  border-radius: 10px;
+  //   border: 2px solid black;
+  text-align: left;
+}
+
+.qr-text-top {
+  position: absolute;
+  top: 0px; /* Position relative to square height */
+  rotate: 180deg;
+  max-width: 200px;
+
+  overflow: hidden;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+
+.qr-text-bottom {
+  position: absolute;
+  bottom: 0px; /* Position relative to square height */
+  left: 0px;
+  max-width: 200px;
+  overflow: hidden;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+
+.qr-text-left {
+  position: absolute;
+  bottom: 0px; /* Start at the top of the square */
+  left: 0px; /* Position relative to square width */
+  writing-mode: vertical-rl;
+  max-height: 200px;
+  overflow: hidden;
+  word-wrap: break-word;
+  white-space: pre-line;
+}
+
+.qr-text-right {
+  position: absolute;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: left;
+  bottom: 0px;
+  right: 0px;
+  max-height: 200px;
+  overflow: hidden;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+
+.qr-download-buttons {
+  margin-top: 20px;
+}
+
+button {
+  margin-right: 10px;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  background-color: #649de2;
+  color: white;
+  cursor: pointer;
+  &:hover {
     background-color: #17365c;
-
-    }
   }
-.item-1{
-	position: absolute  ;
-  color:rgb(196, 55, 55);
+}
+.item-1 {
+  position: absolute;
+  color: rgb(196, 55, 55);
   font-size: 15px;
   top: 120px;
 }
-.loading{
+.loading {
   width: 100%;
   height: 100%;
   position: fixed;
-  padding-top:40%;
-  
-  background-color: rgb(0,0,0,0.3) ;
+  padding-top: 40%;
+
+  background-color: rgb(0, 0, 0, 0.3);
 }
 
+.qr-box-centered {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  border-radius: 10px;
+}
 
+.triangle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+.qr-text-bottom-right-centered {
+  clip-path: polygon(0 100%, 50% 50%, 100% 100%);
+  background-color: white;
+  color: black;
+  .triangle-content-parent {
+    margin-top: 100px;
+  }
+  &.left {
+    transform: rotate(90deg);
+  }
+  &.top {
+    transform: rotate(180deg);
+  }
+  &.right {
+    transform: rotate(270deg);
+  }
+}
+
+.flex-graphics {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+}

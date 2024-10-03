@@ -12,11 +12,10 @@ const TextToGraphics = ({ config }) => {
   const textRef = useRef();
   const [boxSize, setBoxSize] = useState(260); // Default square size
   const navigate = useNavigate();
-  const [fontUrl, setFontUrl] = useState('');
+  const [fontUrl, setFontUrl] = useState("");
 
   const spacingBuffer = 20;
-//
-
+  //
 
   useEffect(() => {
     // Function to get the last modified time or create a version
@@ -24,11 +23,11 @@ const TextToGraphics = ({ config }) => {
       try {
         // Use Axios to send a HEAD request to get the font metadata
         const response = await axios.head(
-          'https://cynlnxqqcyuxauxvxcjf.supabase.co/storage/v1/object/public/fonts/user-font.ttf'
+          "https://cynlnxqqcyuxauxvxcjf.supabase.co/storage/v1/object/public/fonts/user-font.ttf"
         );
 
         // Get the 'Last-Modified' header from the response
-        const lastModified = response.headers['last-modified'];
+        const lastModified = response.headers["last-modified"];
         const version = Math.floor(Date.now() / 1000); // Convert to timestamp
 
         // Append the version as a query parameter to the font URL
@@ -36,7 +35,7 @@ const TextToGraphics = ({ config }) => {
 
         setFontUrl(fontUrlWithVersion);
       } catch (error) {
-        console.error('Error fetching font metadata:', error);
+        console.error("Error fetching font metadata:", error);
       }
     };
 
@@ -46,7 +45,7 @@ const TextToGraphics = ({ config }) => {
   // Dynamically inject the font-face CSS when the font URL is ready
   useEffect(() => {
     if (fontUrl) {
-      const styleSheet = document.createElement('style');
+      const styleSheet = document.createElement("style");
       styleSheet.textContent = `
         @font-face {
           font-family: 'CustomFont';
@@ -59,10 +58,8 @@ const TextToGraphics = ({ config }) => {
     }
   }, [fontUrl]);
 
-
-  
-//
-const downloadPng = () => {
+  //
+  const downloadPng = () => {
     if (qrRef.current) {
       toPng(qrRef.current)
         .then((dataUrl) => {
@@ -89,7 +86,6 @@ const downloadPng = () => {
   };
   // Calculate the box size dynamically based on text length
   useEffect(() => {
- 
     if (!textRef.current) {
       return;
     }
@@ -98,17 +94,17 @@ const downloadPng = () => {
     // const newSize = Math.max(120, textLength * 30); // Adjust size scaling factor
     const newSize = textWidth + textRef.current.clientHeight + spacingBuffer; // Adjust size scaling factor
     console.log("height:", newSize, textLength, textRef.current.clientHeight);
-    setBoxSize(newSize);
+    if (newSize > 200) {
+      setBoxSize(newSize);
+    }
   }, [text]);
-  
-
 
   const sendToPrintify = async () => {
     if (qrRef.current) {
       toPng(qrRef.current)
         .then(async (dataUrl) => {
-          console.log(dataUrl)
-          let data_ = dataUrl.replace("data:image/png;base64,", "")
+          console.log(dataUrl);
+          let data_ = dataUrl.replace("data:image/png;base64,", "");
           let body = {
             file_name: `${text}.png`,
             contents: data_,
@@ -118,18 +114,35 @@ const downloadPng = () => {
               "https://font-file-server.vercel.app/upload-printify",
               body
             );
-            setPrintifyStatus(true)
-            console.log(response)
+            setPrintifyStatus(true);
+            console.log(response);
             return response.data;
           } catch (error) {
             console.error("Error uploading image:", error);
-            setPrintifyStatus(false)
+            setPrintifyStatus(false);
           }
         })
         .catch((err) => {
           console.error("Oops, something went wrong!", err);
         });
     }
+  };
+
+  const getFormattedText = () => {
+    let textContainer = document.getElementById("triangle-bottom");
+    const chunks = text.match(/.{1,3}/g);
+    let lineBreakMap = [0, 4, 9];
+    console.log(chunks);
+    return (
+      <div>
+        {chunks?.map((chunk, index) => (
+          <span key={index}>
+            {chunk}
+            {lineBreakMap.includes(index) && <br />}
+          </span>
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -144,63 +157,133 @@ const downloadPng = () => {
           className="qr-input"
           maxLength={40}
         />
-        <div
-          ref={qrRef}
-          
-          className="qr-box"
-          style={{
-            height: `${boxSize}px`, // Dynamically set height based on text length
-            width: `${boxSize}px`, // Dynamically set width based on text length
-             fontFamily: 'CustomFont' 
-          }}
-        >
-          {/* Top text */}
-          <div
-            className="qr-text-top"
-            style={{
-              left: textRef?.current?.clientHeight + spacingBuffer || 20,
-              // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-            }}
-            ref={textRef}
-          >
-            {text}
-          </div>
+        {/* format-center */}
+        <div className="flex-graphics">
+          {config.format === "center" ? (
+            <div
+              ref={qrRef}
+              className="qr-box-centered"
+              style={{
+                height: `${200}px`, // Dynamically set height based on text length
+                width: `${200}px`, // Dynamically set width based on text length
+                fontFamily: "CustomFont",
+              }}
+            >
+              <div
+                className="triangle qr-text-bottom-right-centered left"
+                style={
+                  {
+                    // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                  }
+                }
+                id="triangle-bottom"
+              >
+                <div className="triangle-content-parent">
+                  {getFormattedText()}
+                </div>
+              </div>
 
-          {/* Bottom text */}
-          <div
-            className="qr-text-bottom"
-            style={
-              {
-                // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-              }
-            }
-          >
-            {text}
-          </div>
+              <div
+                className="triangle qr-text-bottom-right-centered top"
+                style={
+                  {
+                    // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                  }
+                }
+                id="triangle-bottom"
+              >
+                <div className="triangle-content-parent">
+                  {getFormattedText()}
+                </div>
+              </div>
+              <div
+                className="triangle qr-text-bottom-right-centered right"
+                style={
+                  {
+                    // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                  }
+                }
+                id="triangle-bottom"
+              >
+                <div className="triangle-content-parent">
+                  {getFormattedText()}
+                </div>
+              </div>
+              <div
+                className="triangle qr-text-bottom-right-centered"
+                style={
+                  {
+                    // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                  }
+                }
+                id="triangle-bottom"
+              >
+                <div className="triangle-content-parent">
+                  {getFormattedText()}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div
+              ref={qrRef}
+              className="qr-box"
+              style={{
+                height: `${boxSize}px`, // Dynamically set height based on text length
+                width: `${boxSize}px`, // Dynamically set width based on text length
+                fontFamily: "CustomFont",
+              }}
+            >
+              {/* Top text */}
+              <div
+                className="qr-text-top"
+                style={{
+                  left: textRef?.current?.clientHeight + spacingBuffer || 20,
+                  // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                }}
+                
+              >
+                {text}
+              </div>
 
-          {/* Left text (rotated) */}
-          <div
-            className="qr-text-left"
-            style={{
-              // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-              bottom: textRef?.current?.clientHeight + spacingBuffer,
-            }}
-          >
-            {text}
-          </div>
+              {/* Bottom text */}
+              <div
+                className="qr-text-bottom"
+                style={
+                  {
+                    // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                  }
+                }
+                ref={textRef}
+              >
+                {text}
+              </div>
 
-          {/* Right text (rotated) */}
-          <div
-            className="qr-text-right"
-            style={
-              {
-                // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-              }
-            }
-          >
-            {text}
-          </div>
+              {/* Left text (rotated) */}
+              <div
+                className="qr-text-left"
+                style={{
+                  // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                  bottom: textRef?.current?.clientHeight + spacingBuffer,
+                }}
+              >
+                {text}
+              </div>
+
+              {/* Right text (rotated) */}
+              <div
+                className="qr-text-right"
+                style={
+                  {
+                    // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                  }
+                }
+              >
+                {text}
+              </div>
+            </div>
+          )}
         </div>
+
         <div className="qr-download-buttons">
           <button onClick={downloadPng} className="qr-download-button">
             Download as PNG
@@ -216,8 +299,10 @@ const downloadPng = () => {
           Config
         </button>
         {printifyStatus && (
-            <div className="status-message">{'Graphics uploaded to Printify successfully'}</div>
-          )}
+          <div className="status-message">
+            {"Graphics uploaded to Printify successfully"}
+          </div>
+        )}
       </div>
     </>
   );
