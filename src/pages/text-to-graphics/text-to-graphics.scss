@@ -3,7 +3,7 @@
   padding: 20px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   gap: 20px;
 }
@@ -15,6 +15,13 @@
   border-radius: 25px;
   color: grey;
   outline: none;
+  border: none;
+  width: 100%;
+}
+.qr-textLength {
+  margin-top: -30px;
+  font-size: 16px;
+  opacity: 0.5;
 }
 
 .qr-box {
@@ -29,27 +36,35 @@
   border-radius: 10px;
   //   border: 2px solid black;
   text-align: left;
+  transform: rotate(45deg);
+  font-family: "Megafont";
 }
 
 .qr-text-top {
   position: absolute;
   top: 0px; /* Position relative to square height */
   rotate: 180deg;
-  max-width: 200px;
+  max-width: 150px;
 
   overflow: hidden;
   white-space: pre-line;
   word-wrap: break-word;
+  @media (max-width: 700px) {
+    max-width: 100px;
+  }
 }
 
 .qr-text-bottom {
   position: absolute;
   bottom: 0px; /* Position relative to square height */
   left: 0px;
-  max-width: 200px;
+  max-width: 150px;
   overflow: hidden;
   white-space: pre-line;
   word-wrap: break-word;
+  @media (max-width: 700px) {
+    max-width: 100px;
+  }
 }
 
 .qr-text-left {
@@ -57,10 +72,13 @@
   bottom: 0px; /* Start at the top of the square */
   left: 0px; /* Position relative to square width */
   writing-mode: vertical-rl;
-  max-height: 200px;
+  max-height: 150px;
   overflow: hidden;
   word-wrap: break-word;
   white-space: pre-line;
+  @media (max-width: 700px) {
+    max-height: 100px;
+  }
 }
 
 .qr-text-right {
@@ -70,14 +88,25 @@
   text-align: left;
   bottom: 0px;
   right: 0px;
-  max-height: 200px;
+  max-height: 150px;
   overflow: hidden;
   white-space: pre-line;
   word-wrap: break-word;
+  @media (max-width: 700px) {
+    max-height: 100px;
+  }
 }
 
 .qr-download-buttons {
   margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
 }
 
 button {
@@ -112,6 +141,9 @@ button {
   height: 300px;
   position: relative;
   border-radius: 10px;
+  background-color: white;
+  transform: rotate(45deg);
+  font-family: "Megafont";
 }
 
 .triangle {
@@ -131,7 +163,7 @@ button {
   background-color: white;
   color: black;
   .triangle-content-parent {
-    margin-top: 100px;
+    margin-top: 110px;
   }
   &.left {
     transform: rotate(90deg);
@@ -149,4 +181,11 @@ button {
   align-items: center;
   justify-content: center;
   gap: 100px;
+  padding: 50px;
+}
+
+.config-btn {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 }

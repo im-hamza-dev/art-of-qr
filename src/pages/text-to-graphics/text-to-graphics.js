@@ -4,18 +4,19 @@ import download from "downloadjs";
 import "./text-to-graphics.scss"; // Import the CSS file
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { generateFileName } from "../../utils/helpers";
 
 const TextToGraphics = ({ config }) => {
+  let defaultBoxSize = 60;
   const [text, setText] = useState(""); // Default text
   const [printifyStatus, setPrintifyStatus] = useState(false); // Default text
   const qrRef = useRef();
   const textRef = useRef();
-  const [boxSize, setBoxSize] = useState(260); // Default square size
+  const [boxSize, setBoxSize] = useState(defaultBoxSize); // Default square size
   const navigate = useNavigate();
   const [fontUrl, setFontUrl] = useState("");
 
   const spacingBuffer = 20;
-  //
 
   useEffect(() => {
     // Function to get the last modified time or create a version
@@ -60,11 +61,12 @@ const TextToGraphics = ({ config }) => {
 
   //
   const downloadPng = () => {
-    if (qrRef.current) {
-      toPng(qrRef.current)
+    let graphic = document.getElementById("graphic-parent");
+    if (graphic) {
+      toPng(graphic)
         .then((dataUrl) => {
           console.log(dataUrl);
-          download(dataUrl, "qr-code-border.png");
+          download(dataUrl, `${generateFileName(text)}.png`);
         })
         .catch((err) => {
           console.error("Oops, something went wrong!", err);
@@ -74,10 +76,11 @@ const TextToGraphics = ({ config }) => {
 
   // Function to handle SVG download
   const downloadSvg = () => {
-    if (qrRef.current) {
-      toSvg(qrRef.current)
+    let graphic = document.getElementById("graphic-parent");
+    if (graphic) {
+      toSvg(graphic)
         .then((dataUrl) => {
-          download(dataUrl, "qr-code-border.svg");
+          download(dataUrl, `${generateFileName(text)}.svg`);
         })
         .catch((err) => {
           console.error("Oops, something went wrong!", err);
@@ -94,7 +97,7 @@ const TextToGraphics = ({ config }) => {
     // const newSize = Math.max(120, textLength * 30); // Adjust size scaling factor
     const newSize = textWidth + textRef.current.clientHeight + spacingBuffer; // Adjust size scaling factor
     console.log("height:", newSize, textLength, textRef.current.clientHeight);
-    if (newSize > 200) {
+    if (newSize > defaultBoxSize) {
       setBoxSize(newSize);
     }
   }, [text]);
@@ -106,7 +109,7 @@ const TextToGraphics = ({ config }) => {
           console.log(dataUrl);
           let data_ = dataUrl.replace("data:image/png;base64,", "");
           let body = {
-            file_name: `${text}.png`,
+            file_name: `${generateFileName(text)}.png`,
             contents: data_,
           };
           try {
@@ -129,9 +132,8 @@ const TextToGraphics = ({ config }) => {
   };
 
   const getFormattedText = () => {
-    let textContainer = document.getElementById("triangle-bottom");
-    const chunks = text.match(/.{1,3}/g);
-    let lineBreakMap = [0, 4, 9];
+    const chunks = text.match(/.{1,2}/g);
+    let lineBreakMap = [0, 1, 3, 6, 10, 15];
     console.log(chunks);
     return (
       <div>
@@ -149,159 +151,169 @@ const TextToGraphics = ({ config }) => {
     <>
       <div className="qr-container">
         <h1>8-Bit Pixel Graphic</h1>
-        <input
-          type="text"
+        <textarea
+          rows="2"
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => {
+            if (e.target.value.includes(" ")) return false;
+            setText(e.target.value);
+          }}
           placeholder="Enter text"
           className="qr-input"
           maxLength={40}
-        />
-        {/* format-center */}
-        <div className="flex-graphics">
-          {config.format === "center" ? (
-            <div
-              ref={qrRef}
-              className="qr-box-centered"
-              style={{
-                height: `${200}px`, // Dynamically set height based on text length
-                width: `${200}px`, // Dynamically set width based on text length
-                fontFamily: "CustomFont",
-              }}
-            >
-              <div
-                className="triangle qr-text-bottom-right-centered left"
-                style={
-                  {
-                    // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-                  }
-                }
-                id="triangle-bottom"
-              >
-                <div className="triangle-content-parent">
-                  {getFormattedText()}
-                </div>
-              </div>
+        ></textarea>
+        {<span className="qr-textLength">{text.length + " / " + 40}</span>}
+        <br />
+        {text.length > 0 && (
+          <>
+            {/* format-center */}
+            <div className="flex-graphics" id="graphic-parent">
+              {config.format === "center" ? (
+                <div
+                  ref={qrRef}
+                  className="qr-box-centered"
+                  style={{
+                    height: `${210}px`, // Dynamically set height based on text length
+                    width: `${210}px`, // Dynamically set width based on text length
+                    fontFamily: "CustomFont",
+                  }}
+                >
+                  <div
+                    className="triangle qr-text-bottom-right-centered left"
+                    style={
+                      {
+                        // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                      }
+                    }
+                    id="triangle-bottom"
+                  >
+                    <div className="triangle-content-parent">
+                      {getFormattedText()}
+                    </div>
+                  </div>
 
-              <div
-                className="triangle qr-text-bottom-right-centered top"
-                style={
-                  {
-                    // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-                  }
-                }
-                id="triangle-bottom"
-              >
-                <div className="triangle-content-parent">
-                  {getFormattedText()}
+                  <div
+                    className="triangle qr-text-bottom-right-centered top"
+                    style={
+                      {
+                        // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                      }
+                    }
+                    id="triangle-bottom"
+                  >
+                    <div className="triangle-content-parent">
+                      {getFormattedText()}
+                    </div>
+                  </div>
+                  <div
+                    className="triangle qr-text-bottom-right-centered right"
+                    style={
+                      {
+                        // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                      }
+                    }
+                    id="triangle-bottom"
+                  >
+                    <div className="triangle-content-parent">
+                      {getFormattedText()}
+                    </div>
+                  </div>
+                  <div
+                    className="triangle qr-text-bottom-right-centered"
+                    style={
+                      {
+                        // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                      }
+                    }
+                    id="triangle-bottom"
+                  >
+                    <div className="triangle-content-parent">
+                      {getFormattedText()}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div
-                className="triangle qr-text-bottom-right-centered right"
-                style={
-                  {
-                    // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-                  }
-                }
-                id="triangle-bottom"
-              >
-                <div className="triangle-content-parent">
-                  {getFormattedText()}
+              ) : (
+                <div
+                  ref={qrRef}
+                  className="qr-box"
+                  style={{
+                    height: `${boxSize}px`, // Dynamically set height based on text length
+                    width: `${boxSize}px`, // Dynamically set width based on text length
+                    fontFamily: "CustomFont",
+                  }}
+                >
+                  {/* Top text */}
+                  <div
+                    className="qr-text-top"
+                    style={{
+                      left:
+                        textRef?.current?.clientHeight + spacingBuffer || 20,
+                      // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                    }}
+                  >
+                    {text}
+                  </div>
+
+                  {/* Bottom text */}
+                  <div
+                    className="qr-text-bottom"
+                    style={
+                      {
+                        // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                      }
+                    }
+                    ref={textRef}
+                  >
+                    {text}
+                  </div>
+
+                  {/* Left text (rotated) */}
+                  <div
+                    className="qr-text-left"
+                    style={{
+                      // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                      bottom: textRef?.current?.clientHeight + spacingBuffer,
+                    }}
+                  >
+                    {text}
+                  </div>
+
+                  {/* Right text (rotated) */}
+                  <div
+                    className="qr-text-right"
+                    style={
+                      {
+                        // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
+                      }
+                    }
+                  >
+                    {text}
+                  </div>
                 </div>
-              </div>
-              <div
-                className="triangle qr-text-bottom-right-centered"
-                style={
-                  {
-                    // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-                  }
-                }
-                id="triangle-bottom"
-              >
-                <div className="triangle-content-parent">
-                  {getFormattedText()}
-                </div>
-              </div>
+              )}
             </div>
-          ) : (
-            <div
-              ref={qrRef}
-              className="qr-box"
-              style={{
-                height: `${boxSize}px`, // Dynamically set height based on text length
-                width: `${boxSize}px`, // Dynamically set width based on text length
-                fontFamily: "CustomFont",
-              }}
-            >
-              {/* Top text */}
-              <div
-                className="qr-text-top"
-                style={{
-                  left: textRef?.current?.clientHeight + spacingBuffer || 20,
-                  // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-                }}
-                
-              >
-                {text}
-              </div>
-
-              {/* Bottom text */}
-              <div
-                className="qr-text-bottom"
-                style={
-                  {
-                    // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-                  }
-                }
-                ref={textRef}
-              >
-                {text}
-              </div>
-
-              {/* Left text (rotated) */}
-              <div
-                className="qr-text-left"
-                style={{
-                  // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-                  bottom: textRef?.current?.clientHeight + spacingBuffer,
+            <br />
+            <div className="qr-download-buttons">
+              <button onClick={downloadPng} className="qr-download-button">
+                Download as PNG
+              </button>
+              <button onClick={downloadSvg}>Download as SVG</button>
+              <button onClick={sendToPrintify}>Printify</button>
+              <button
+                onClick={() => {
+                  navigate("/config");
                 }}
               >
-                {text}
-              </div>
-
-              {/* Right text (rotated) */}
-              <div
-                className="qr-text-right"
-                style={
-                  {
-                    // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-                  }
-                }
-              >
-                {text}
-              </div>
+                Config
+              </button>
             </div>
-          )}
-        </div>
 
-        <div className="qr-download-buttons">
-          <button onClick={downloadPng} className="qr-download-button">
-            Download as PNG
-          </button>
-          <button onClick={downloadSvg}>Download as SVG</button>
-          <button onClick={sendToPrintify}>Printify</button>
-        </div>
-        <button
-          onClick={() => {
-            navigate("/config");
-          }}
-        >
-          Config
-        </button>
-        {printifyStatus && (
-          <div className="status-message">
-            {"Graphics uploaded to Printify successfully"}
-          </div>
+            {printifyStatus && (
+              <div className="status-message">
+                {"Graphics uploaded to Printify successfully"}
+              </div>
+            )}
+          </>
         )}
       </div>
     </>

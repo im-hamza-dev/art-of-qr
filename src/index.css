@@ -7,6 +7,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* src/styles.css or src/App.css */
+@font-face {
+  font-family: 'Megafont';
+  src: url('./fonts/Megafont.ttf') format('truetype'); /* Adjust the format if needed */
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 code {
   font-family:'CustomFont' source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
