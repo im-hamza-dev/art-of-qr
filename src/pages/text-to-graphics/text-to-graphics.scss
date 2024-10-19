@@ -43,6 +43,8 @@
 .qr-text-top {
   position: absolute;
   top: 0px; /* Position relative to square height */
+  left: 0px;
+  right: 3px;
   rotate: 180deg;
   max-width: 150px;
 
@@ -57,7 +59,7 @@
 .qr-text-bottom {
   position: absolute;
   bottom: 0px; /* Position relative to square height */
-  left: 0px;
+  left: 3px;
   max-width: 150px;
   overflow: hidden;
   white-space: pre-line;
@@ -67,8 +69,10 @@
   }
 }
 
+
 .qr-text-left {
   position: absolute;
+  top:3px;
   bottom: 0px; /* Start at the top of the square */
   left: 0px; /* Position relative to square width */
   writing-mode: vertical-rl;
@@ -86,7 +90,7 @@
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   text-align: left;
-  bottom: 0px;
+  bottom: 3px;
   right: 0px;
   max-height: 150px;
   overflow: hidden;
@@ -181,6 +185,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 100px;
+  opacity: 1;
   padding: 50px;
 }
 
@@ -188,4 +193,8 @@ button {
   position: absolute;
   right: 20px;
   bottom: 20px;
+}
+
+.hideGraphics{
+  opacity: 0;
 }

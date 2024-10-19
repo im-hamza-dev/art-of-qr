@@ -5,6 +5,7 @@ import "./text-to-graphics.scss"; // Import the CSS file
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { generateFileName } from "../../utils/helpers";
+import { lettersPerRowMap } from "./help";
 
 const TextToGraphics = ({ config }) => {
   let defaultBoxSize = 60;
@@ -15,8 +16,9 @@ const TextToGraphics = ({ config }) => {
   const [boxSize, setBoxSize] = useState(defaultBoxSize); // Default square size
   const navigate = useNavigate();
   const [fontUrl, setFontUrl] = useState("");
+  const [loader, setLoader] = useState(false);
 
-  const spacingBuffer = 20;
+  const spacingBuffer = 30;
 
   useEffect(() => {
     // Function to get the last modified time or create a version
@@ -33,7 +35,6 @@ const TextToGraphics = ({ config }) => {
 
         // Append the version as a query parameter to the font URL
         const fontUrlWithVersion = `https://cynlnxqqcyuxauxvxcjf.supabase.co/storage/v1/object/public/fonts/user-font.ttf?v=${version}`;
-
         setFontUrl(fontUrlWithVersion);
       } catch (error) {
         console.error("Error fetching font metadata:", error);
@@ -55,6 +56,7 @@ const TextToGraphics = ({ config }) => {
           font-style: normal;
         }
       `;
+      console.log("font loading...");
       document.head.appendChild(styleSheet);
     }
   }, [fontUrl]);
@@ -65,7 +67,6 @@ const TextToGraphics = ({ config }) => {
     if (graphic) {
       toPng(graphic)
         .then((dataUrl) => {
-          console.log(dataUrl);
           download(dataUrl, `${generateFileName(text)}.png`);
         })
         .catch((err) => {
@@ -96,7 +97,6 @@ const TextToGraphics = ({ config }) => {
     let textWidth = textRef.current.clientWidth;
     // const newSize = Math.max(120, textLength * 30); // Adjust size scaling factor
     const newSize = textWidth + textRef.current.clientHeight + spacingBuffer; // Adjust size scaling factor
-    console.log("height:", newSize, textLength, textRef.current.clientHeight);
     if (newSize > defaultBoxSize) {
       setBoxSize(newSize);
     }
@@ -106,7 +106,6 @@ const TextToGraphics = ({ config }) => {
     if (qrRef.current) {
       toPng(qrRef.current)
         .then(async (dataUrl) => {
-          console.log(dataUrl);
           let data_ = dataUrl.replace("data:image/png;base64,", "");
           let body = {
             file_name: `${generateFileName(text)}.png`,
@@ -134,7 +133,6 @@ const TextToGraphics = ({ config }) => {
   const getFormattedText = () => {
     const chunks = text.match(/.{1,2}/g);
     let lineBreakMap = [0, 1, 3, 6, 10, 15];
-    console.log(chunks);
     return (
       <div>
         {chunks?.map((chunk, index) => (
@@ -156,22 +154,41 @@ const TextToGraphics = ({ config }) => {
           value={text}
           onChange={(e) => {
             if (e.target.value.includes(" ")) return false;
-            setText(e.target.value);
+            let lettersWithoutLineBreak = e.target.value.replace(/\n/g, "");
+            setLoader(lettersWithoutLineBreak.length < 3 && true);
+            let spacingArr = lettersPerRowMap[lettersWithoutLineBreak?.length];
+            let lettersWithNewLineBreak = "";
+            lettersWithoutLineBreak?.split("").forEach((element, index) => {
+              lettersWithNewLineBreak = `${lettersWithNewLineBreak}${element}${
+                spacingArr.includes(index + 1) ? "\n" : ""
+              }`;
+            });
+            console.log("final:", lettersWithNewLineBreak);
+            setText(lettersWithNewLineBreak);
+            if (lettersWithoutLineBreak.length < 3) {
+              setTimeout(() => {
+                setLoader(false);
+              }, 2000);
+            }
           }}
           placeholder="Enter text"
           className="qr-input"
-          maxLength={40}
+          maxLength={41}
         ></textarea>
-        {<span className="qr-textLength">{text.length + " / " + 40}</span>}
+        {
+          <span className="qr-textLength">
+            {text.replace(/\n/g, "")?.length + " / " + 40}
+          </span>
+        }
         <br />
-        {text.length > 0 && (
+        { text.length > 0 && (
           <>
             {/* format-center */}
-            <div className="flex-graphics" id="graphic-parent">
+            <div className={`flex-graphics ${loader ? 'hideGraphics':'' }`} id="graphic-parent">
               {config.format === "center" ? (
                 <div
                   ref={qrRef}
-                  className="qr-box-centered"
+                  className={`qr-box-centered`}
                   style={{
                     height: `${210}px`, // Dynamically set height based on text length
                     width: `${210}px`, // Dynamically set width based on text length
@@ -247,7 +264,8 @@ const TextToGraphics = ({ config }) => {
                     className="qr-text-top"
                     style={{
                       left:
-                        textRef?.current?.clientHeight + spacingBuffer || 20,
+                        textRef?.current?.clientHeight + (spacingBuffer - 10) ||
+                        20,
                       // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
                     }}
                   >
@@ -272,7 +290,8 @@ const TextToGraphics = ({ config }) => {
                     className="qr-text-left"
                     style={{
                       // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
-                      bottom: textRef?.current?.clientHeight + spacingBuffer,
+                      bottom:
+                        textRef?.current?.clientHeight + (spacingBuffer - 10),
                     }}
                   >
                     {text}
