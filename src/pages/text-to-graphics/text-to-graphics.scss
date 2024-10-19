@@ -141,8 +141,8 @@ button {
 }
 
 .qr-box-centered {
-  width: 300px;
-  height: 300px;
+  width: 330px;
+  height: 330px;
   position: relative;
   border-radius: 10px;
   background-color: white;
@@ -166,8 +166,10 @@ button {
   clip-path: polygon(0 100%, 50% 50%, 100% 100%);
   background-color: white;
   color: black;
+  word-wrap: break-word;
+  white-space: pre-line;
   .triangle-content-parent {
-    margin-top: 110px;
+    margin-top: 120px;
   }
   &.left {
     transform: rotate(90deg);

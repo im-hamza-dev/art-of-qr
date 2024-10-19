@@ -5,7 +5,7 @@ import "./text-to-graphics.scss"; // Import the CSS file
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { generateFileName } from "../../utils/helpers";
-import { lettersPerRowMap } from "./help";
+import { lettersPerRowMapCenter, lettersPerRowMapLeft } from "./help";
 
 const TextToGraphics = ({ config }) => {
   let defaultBoxSize = 60;
@@ -153,14 +153,18 @@ const TextToGraphics = ({ config }) => {
           rows="2"
           value={text}
           onChange={(e) => {
-            if (e.target.value.includes(" ")) return false;
+            if (e.target.value?.includes(" ") || e.target.value.replace(/\n/g, "").length > 36) return;
             let lettersWithoutLineBreak = e.target.value.replace(/\n/g, "");
             setLoader(lettersWithoutLineBreak.length < 3 && true);
+            let lettersPerRowMap =
+              config.format === "center"
+                ? lettersPerRowMapCenter
+                : lettersPerRowMapLeft;
             let spacingArr = lettersPerRowMap[lettersWithoutLineBreak?.length];
             let lettersWithNewLineBreak = "";
             lettersWithoutLineBreak?.split("").forEach((element, index) => {
               lettersWithNewLineBreak = `${lettersWithNewLineBreak}${element}${
-                spacingArr.includes(index + 1) ? "\n" : ""
+                spacingArr?.includes(index + 1) ? "\n" : ""
               }`;
             });
             console.log("final:", lettersWithNewLineBreak);
@@ -173,7 +177,7 @@ const TextToGraphics = ({ config }) => {
           }}
           placeholder="Enter text"
           className="qr-input"
-          maxLength={41}
+          maxLength={config.format === "center" ? 45 : 41}
         ></textarea>
         {
           <span className="qr-textLength">
@@ -181,17 +185,20 @@ const TextToGraphics = ({ config }) => {
           </span>
         }
         <br />
-        { text.length > 0 && (
+        {text.length > 0 && (
           <>
             {/* format-center */}
-            <div className={`flex-graphics ${loader ? 'hideGraphics':'' }`} id="graphic-parent">
+            <div
+              className={`flex-graphics ${loader ? "hideGraphics" : ""}`}
+              id="graphic-parent"
+            >
               {config.format === "center" ? (
                 <div
                   ref={qrRef}
                   className={`qr-box-centered`}
                   style={{
-                    height: `${210}px`, // Dynamically set height based on text length
-                    width: `${210}px`, // Dynamically set width based on text length
+                    height: `${250}px`, // Dynamically set height based on text length
+                    width: `${250}px`, // Dynamically set width based on text length
                     fontFamily: "CustomFont",
                   }}
                 >
@@ -205,7 +212,8 @@ const TextToGraphics = ({ config }) => {
                     id="triangle-bottom"
                   >
                     <div className="triangle-content-parent">
-                      {getFormattedText()}
+                      {/* {getFormattedText()} */}
+                      {text}
                     </div>
                   </div>
 
@@ -219,7 +227,8 @@ const TextToGraphics = ({ config }) => {
                     id="triangle-bottom"
                   >
                     <div className="triangle-content-parent">
-                      {getFormattedText()}
+                      {/* {getFormattedText()} */}
+                      {text}
                     </div>
                   </div>
                   <div
@@ -232,7 +241,8 @@ const TextToGraphics = ({ config }) => {
                     id="triangle-bottom"
                   >
                     <div className="triangle-content-parent">
-                      {getFormattedText()}
+                      {/* {getFormattedText()} */}
+                      {text}
                     </div>
                   </div>
                   <div
@@ -245,7 +255,8 @@ const TextToGraphics = ({ config }) => {
                     id="triangle-bottom"
                   >
                     <div className="triangle-content-parent">
-                      {getFormattedText()}
+                      {/* {getFormattedText()} */}
+                      {text}
                     </div>
                   </div>
                 </div>
