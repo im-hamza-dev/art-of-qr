@@ -151,7 +151,7 @@ const TextToGraphics = ({ config }) => {
         <h1>8-Bit Pixel Graphic</h1>
         <textarea
           rows="1"
-          value={text.replace(/\n/g, "")}
+          value={text}//.replace(/\n/g, "")
           onChange={(e) => {
             if (e.target.value?.includes(" ") || e.target.value.replace(/\n/g, "").length > 36) return;
             let lettersWithoutLineBreak = e.target.value.replace(/\n/g, "");
