@@ -48,7 +48,7 @@
   max-width: 150px;
 
   overflow: hidden;
-  white-space: pre-line;
+  white-space: break-spaces;
   word-wrap: break-word;
   @media (max-width: 700px) {
     max-width: 100px;
@@ -61,7 +61,7 @@
   left: 3px;
   max-width: 150px;
   overflow: hidden;
-  white-space: pre-line;
+  white-space: break-spaces;
   word-wrap: break-word;
   @media (max-width: 700px) {
     max-width: 100px;
@@ -78,7 +78,7 @@
   max-height: 150px;
   overflow: hidden;
   word-wrap: break-word;
-  white-space: pre-line;
+  white-space: break-spaces;
   @media (max-width: 700px) {
     max-height: 100px;
   }
@@ -93,7 +93,7 @@
   right: 0px;
   max-height: 150px;
   overflow: hidden;
-  white-space: pre-line;
+  white-space: break-spaces;
   word-wrap: break-word;
   @media (max-width: 700px) {
     max-height: 100px;
@@ -166,7 +166,7 @@ button {
   background-color: white;
   color: black;
   word-wrap: break-word;
-  white-space: pre-line;
+  white-space: break-spaces;
   .triangle-content-parent {
     margin-top: 120px;
   }
