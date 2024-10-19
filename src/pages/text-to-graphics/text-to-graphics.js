@@ -150,8 +150,8 @@ const TextToGraphics = ({ config }) => {
       <div className="qr-container">
         <h1>8-Bit Pixel Graphic</h1>
         <textarea
-          rows="2"
-          value={text}
+          rows="1"
+          value={text.replace(/\n/g, "")}
           onChange={(e) => {
             if (e.target.value?.includes(" ") || e.target.value.replace(/\n/g, "").length > 36) return;
             let lettersWithoutLineBreak = e.target.value.replace(/\n/g, "");
@@ -181,7 +181,7 @@ const TextToGraphics = ({ config }) => {
         ></textarea>
         {
           <span className="qr-textLength">
-            {text.replace(/\n/g, "")?.length + " / " + 40}
+            {text.replace(/\n/g, "")?.length + " / " + 36}
           </span>
         }
         <br />
