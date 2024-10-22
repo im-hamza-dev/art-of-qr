@@ -57,10 +57,14 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
           src: url('${fontUrl}') format('truetype');
           font-weight: normal;
           font-style: normal;
+          font-display: fallback;
         }
       `;
       console.log("font loading...");
       document.head.appendChild(styleSheet);
+      if(qrRef.current){
+        qrRef.current.style.fontFamily = 'CustomFont'
+      }
     }
   }, [fontUrl]);
 
@@ -194,7 +198,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                   style={{
                     height: `${250}px`, // Dynamically set height based on text length
                     width: `${250}px`, // Dynamically set width based on text length
-                    fontFamily: "CustomFont",
+                    // fontFamily: "CustomFont",
                   }}
                 >
                   <div
@@ -262,7 +266,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                   style={{
                     height: `${boxSize}px`, // Dynamically set height based on text length
                     width: `${boxSize}px`, // Dynamically set width based on text length
-                    fontFamily: "CustomFont",
+                    // fontFamily: "CustomFont",
                   }}
                 >
                   {/* Top text */}
