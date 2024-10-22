@@ -120,7 +120,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
           };
           try {
             const response = await axios.post(
-              "https://font-file-server.vercel.app/upload-printify",
+              "https://font-file-server.vercel.app/uploadImage",
               body
             );
             setPrintifyStatus(true);
