@@ -36,7 +36,8 @@
   //   border: 2px solid black;
   text-align: left;
   transform: rotate(45deg);
-  font-family: "Megafont";
+  font-family: 'Megafont', sans-serif;
+  font-display: fallback;
 }
 
 .qr-text-top {
@@ -143,10 +144,11 @@ button {
   width: 330px;
   height: 330px;
   position: relative;
-  border-radius: 10px;
   background-color: white;
   transform: rotate(45deg);
-  font-family: "Megafont";
+  font-family: 'Megafont', sans-serif;
+  font-display: fallback;
+
 }
 
 .triangle {

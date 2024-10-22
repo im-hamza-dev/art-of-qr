@@ -9,12 +9,15 @@ function App() {
   const [config, setConfig] = useState({
     format: 'left'
   })
+  const [text, setText] = useState("")
+  const [textInput, setTextInput] = useState(""); // Default text
+
   return (
     <div className="App">
     <header className="App-header">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<TextToGraphics config={config}  />} />
+          <Route path="/" element={<TextToGraphics config={config} text={text} setText={setText} textInput={textInput} setTextInput={setTextInput}  />} />
           <Route path="/config" element={<UploadFont setConfig = {setConfig} config={config}/>} />
           <Route path="*" element={<NoMatch />} />
         </Routes>

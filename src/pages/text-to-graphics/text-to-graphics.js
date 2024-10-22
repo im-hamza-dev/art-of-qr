@@ -7,9 +7,12 @@ import axios from "axios";
 import { generateFileName } from "../../utils/helpers";
 import { lettersPerRowMapCenter, lettersPerRowMapLeft } from "./help";
 
-const TextToGraphics = ({ config }) => {
+//font load glitch
+// block space removal
+// input with space and input without space adjustments
+
+const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   let defaultBoxSize = 60;
-  const [text, setText] = useState(""); // Default text
   const [printifyStatus, setPrintifyStatus] = useState(false); // Default text
   const qrRef = useRef();
   const textRef = useRef();
@@ -18,7 +21,7 @@ const TextToGraphics = ({ config }) => {
   const [fontUrl, setFontUrl] = useState("");
   const [loader, setLoader] = useState(false);
 
-  const spacingBuffer = 30;
+  const spacingBuffer = 10;
 
   useEffect(() => {
     // Function to get the last modified time or create a version
@@ -130,20 +133,20 @@ const TextToGraphics = ({ config }) => {
     }
   };
 
-  const getFormattedText = () => {
-    const chunks = text.match(/.{1,2}/g);
-    let lineBreakMap = [0, 1, 3, 6, 10, 15];
-    return (
-      <div>
-        {chunks?.map((chunk, index) => (
-          <span key={index}>
-            {chunk}
-            {lineBreakMap.includes(index) && <br />}
-          </span>
-        ))}
-      </div>
-    );
-  };
+  // const getFormattedText = () => {
+  //   const chunks = text.match(/.{1,2}/g);
+  //   let lineBreakMap = [0, 1, 3, 6, 10, 15];
+  //   return (
+  //     <div>
+  //       {chunks?.map((chunk, index) => (
+  //         <span key={index}>
+  //           {chunk}
+  //           {lineBreakMap.includes(index) && <br />}
+  //         </span>
+  //       ))}
+  //     </div>
+  //   );
+  // };
 
   return (
     <>
@@ -151,11 +154,14 @@ const TextToGraphics = ({ config }) => {
         <h1>8-Bit Pixel Graphic</h1>
         <textarea
           rows="1"
-          value={text.replace(/\n/g, "")}
+          value={textInput.replace(/\n/g, "")}
           onChange={(e) => {
-            if (e.target.value?.includes(" ") || e.target.value.replace(/\n/g, "").length > 36) return;
-            let lettersWithoutLineBreak = e.target.value.replace(/\n/g, "");
-            setLoader(lettersWithoutLineBreak.length < 3 && true);
+            let inputWithoutSpace = e.target.value.replace(/\s/g, "");
+            let maxLength = config.format === "center" ? 45 : 41;
+            if (inputWithoutSpace.length > maxLength) return;
+            if (inputWithoutSpace.replace(/\n/g, "").length > 36) return;
+            setTextInput(e.target.value);
+            let lettersWithoutLineBreak = inputWithoutSpace.replace(/\n/g, "");
             let lettersPerRowMap =
               config.format === "center"
                 ? lettersPerRowMapCenter
@@ -169,29 +175,18 @@ const TextToGraphics = ({ config }) => {
             });
             console.log("final:", lettersWithNewLineBreak);
             setText(lettersWithNewLineBreak);
-            if (lettersWithoutLineBreak.length < 3) {
-              setTimeout(() => {
-                setLoader(false);
-              }, 2000);
-            }
           }}
           placeholder="Enter text"
           className="qr-input"
-          maxLength={config.format === "center" ? 45 : 41}
         ></textarea>
-        {
-          <span className="qr-textLength">
-            {text.replace(/\n/g, "")?.length + " / " + 36}
-          </span>
-        }
+        <span className="qr-textLength">
+          {text.replace(/\n/g, "")?.length + " / " + 36}
+        </span>
         <br />
         {text.length > 0 && (
           <>
             {/* format-center */}
-            <div
-              className={`flex-graphics ${loader ? "hideGraphics" : ""}`}
-              id="graphic-parent"
-            >
+            <div className={`flex-graphics  `} id="graphic-parent">
               {config.format === "center" ? (
                 <div
                   ref={qrRef}
