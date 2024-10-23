@@ -21,7 +21,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   const [fontUrl, setFontUrl] = useState("");
   const [loader, setLoader] = useState(false);
 
-  const spacingBuffer = 10;
+  const spacingBuffer = 5;
 
   useEffect(() => {
     // Function to get the last modified time or create a version
