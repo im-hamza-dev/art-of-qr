@@ -24,6 +24,16 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   const spacingBuffer = 5;
 
   useEffect(() => {
+    if (text.length > 0) {
+      let existingText = text;
+      onChangeTextHandler(existingText + "a");
+      setTimeout(() => {
+        onChangeTextHandler(existingText);
+      }, 100);
+    }
+  }, []);
+
+  useEffect(() => {
     // Function to get the last modified time or create a version
     const fetchFontVersion = async () => {
       try {
@@ -62,8 +72,8 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
       `;
       console.log("font loading...");
       document.head.appendChild(styleSheet);
-      if(qrRef.current){
-        qrRef.current.style.fontFamily = 'CustomFont'
+      if (qrRef.current) {
+        qrRef.current.style.fontFamily = "CustomFont";
       }
     }
   }, [fontUrl]);
@@ -137,20 +147,28 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
     }
   };
 
-  // const getFormattedText = () => {
-  //   const chunks = text.match(/.{1,2}/g);
-  //   let lineBreakMap = [0, 1, 3, 6, 10, 15];
-  //   return (
-  //     <div>
-  //       {chunks?.map((chunk, index) => (
-  //         <span key={index}>
-  //           {chunk}
-  //           {lineBreakMap.includes(index) && <br />}
-  //         </span>
-  //       ))}
-  //     </div>
-  //   );
-  // };
+
+  const onChangeTextHandler = (value) => {
+    let inputWithoutSpace = value.replace(/\s/g, "");
+    let maxLength = config.format === "center" ? 45 : 41;
+    if (inputWithoutSpace.length > maxLength) return;
+    if (inputWithoutSpace.replace(/\n/g, "").length > 36) return;
+    setTextInput(value);
+    let lettersWithoutLineBreak = inputWithoutSpace.replace(/\n/g, "");
+    let lettersPerRowMap =
+      config.format === "center"
+        ? lettersPerRowMapCenter
+        : lettersPerRowMapLeft;
+    let spacingArr = lettersPerRowMap[lettersWithoutLineBreak?.length];
+    let lettersWithNewLineBreak = "";
+    lettersWithoutLineBreak?.split("").forEach((element, index) => {
+      lettersWithNewLineBreak = `${lettersWithNewLineBreak}${element}${
+        spacingArr?.includes(index + 1) ? "\n" : ""
+      }`;
+    });
+    console.log("final:", lettersWithNewLineBreak);
+    setText(lettersWithNewLineBreak);
+  };
 
   return (
     <>
@@ -160,25 +178,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
           rows="1"
           value={textInput.replace(/\n/g, "")}
           onChange={(e) => {
-            let inputWithoutSpace = e.target.value.replace(/\s/g, "");
-            let maxLength = config.format === "center" ? 45 : 41;
-            if (inputWithoutSpace.length > maxLength) return;
-            if (inputWithoutSpace.replace(/\n/g, "").length > 36) return;
-            setTextInput(e.target.value);
-            let lettersWithoutLineBreak = inputWithoutSpace.replace(/\n/g, "");
-            let lettersPerRowMap =
-              config.format === "center"
-                ? lettersPerRowMapCenter
-                : lettersPerRowMapLeft;
-            let spacingArr = lettersPerRowMap[lettersWithoutLineBreak?.length];
-            let lettersWithNewLineBreak = "";
-            lettersWithoutLineBreak?.split("").forEach((element, index) => {
-              lettersWithNewLineBreak = `${lettersWithNewLineBreak}${element}${
-                spacingArr?.includes(index + 1) ? "\n" : ""
-              }`;
-            });
-            console.log("final:", lettersWithNewLineBreak);
-            setText(lettersWithNewLineBreak);
+            onChangeTextHandler(e.target.value);
           }}
           placeholder="Enter text"
           className="qr-input"
