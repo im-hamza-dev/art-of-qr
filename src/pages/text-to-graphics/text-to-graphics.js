@@ -116,11 +116,11 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
           let data_ = dataUrl.replace("data:image/png;base64,", "");
           let body = {
             file_name: `${generateFileName(text)}.png`,
-            contents: data_,
+            contents: dataUrl,
           };
           try {
             const response = await axios.post(
-              "https://font-file-server.vercel.app/upload-printify",
+              "https://font-file-server.vercel.app/uploadImage",
               body
             );
             setPrintifyStatus(true);
