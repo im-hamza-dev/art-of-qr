@@ -48,7 +48,7 @@
   right: 0px;//4
   rotate: 180deg;
   max-width: 150px;
-display: block;
+display: inline-block;
   overflow: hidden;
   white-space: break-spaces;
   word-wrap: break-word;
@@ -56,7 +56,7 @@ display: block;
   background:red;
   padding: 0px;
   width: fit-content;
-  
+  border: 1px solid black;
   overflow: hidden;
   @media (max-width: 700px) {
     max-width: 125px;
@@ -67,7 +67,7 @@ display: block;
   position: absolute;
   bottom: 0px; /* Position relative to square height */
   left: 0px;//4
-  display: block;
+  display: inline-block;
   max-width: 150px;
   overflow: hidden;
   white-space: break-spaces;
@@ -76,7 +76,7 @@ display: block;
   background: blue;
   padding: 0px;
     width: fit-content;
-  
+ border: 1px solid black; 
   overflow: hidden;
   @media (max-width: 700px) {
     max-width: 125px;
@@ -91,7 +91,7 @@ display: block;
   left: 0px; //2/* Position relative to square width */
   writing-mode: vertical-rl;
   max-height: 150px;
-  display: block;
+  display: inline-block;
   overflow: hidden;
   word-wrap: break-word;
   box-sizing:border-box;
@@ -100,7 +100,7 @@ display: block;
   padding: 0px;
     height: fit-content;
   overflow: hidden;
-  
+  border: 1px solid black;
   @media (max-width: 700px) {
     max-height: 125px;
   }
@@ -113,7 +113,7 @@ display: block;
   text-align: left;
   bottom: 0px;//4
   right: 0px;//2
-  display: block;
+  display: inline-block;
   max-height: 150px;
   overflow: hidden;
   white-space: break-spaces;
@@ -122,7 +122,7 @@ display: block;
   background:purple;
   padding: 0px;
   height: fit-content;
-
+border: 1px solid black;
   overflow: hidden;
   @media (max-width: 700px) {
     max-height: 125px;
