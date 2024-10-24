@@ -54,6 +54,7 @@ display: block;
   word-wrap: break-word;
   box-sizing:border-box;
   background:red;
+  padding: 0px;
   @media (max-width: 700px) {
     max-width: 125px;
   }
@@ -70,6 +71,7 @@ display: block;
   word-wrap: break-word;
   box-sizing:border-box;
   background: blue;
+  padding: 0px;
   @media (max-width: 700px) {
     max-width: 125px;
   }
@@ -89,6 +91,7 @@ display: block;
   box-sizing:border-box;
   white-space: break-spaces;
   background:green;
+  padding: 0px;
   
   @media (max-width: 700px) {
     max-height: 125px;
@@ -109,6 +112,7 @@ display: block;
   box-sizing:border-box;
   word-wrap: break-word;
   background:purple;
+  padding: 0px;
   @media (max-width: 700px) {
     max-height: 125px;
   }
