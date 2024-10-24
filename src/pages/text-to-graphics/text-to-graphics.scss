@@ -44,8 +44,8 @@
 .qr-text-top {
   position: absolute;
   top: 0px; /* Position relative to square height */
-  left: 1px;
-  right: 4px;
+  left: 0px;//1
+  right: 0px;//4
   rotate: 180deg;
   max-width: 150px;
 display: block;
@@ -63,8 +63,8 @@ display: block;
 
 .qr-text-bottom {
   position: absolute;
-  bottom: 1px; /* Position relative to square height */
-  left: 4px;
+  bottom: 0px; /* Position relative to square height */
+  left: 0px;//4
   display: block;
   max-width: 150px;
   overflow: hidden;
@@ -83,8 +83,8 @@ display: block;
 .qr-text-left {
   position: absolute;
   top:4px;
-  bottom: 0px; /* Start at the top of the square */
-  left: 2px; /* Position relative to square width */
+  bottom: 0px;//0 /* Start at the top of the square */
+  left: 0px; //2/* Position relative to square width */
   writing-mode: vertical-rl;
   max-height: 150px;
   display: block;
@@ -94,7 +94,7 @@ display: block;
   white-space: break-spaces;
   background:green;
   padding: 0px;
-    width: fit-content;
+    height: fit-content;
   @media (max-width: 700px) {
     max-height: 125px;
   }
@@ -105,8 +105,8 @@ display: block;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   text-align: left;
-  bottom: 4px;
-  right: 2px;
+  bottom: 0px;//4
+  right: 0px;//2
   display: block;
   max-height: 150px;
   overflow: hidden;
@@ -115,7 +115,7 @@ display: block;
   word-wrap: break-word;
   background:purple;
   padding: 0px;
-    width: fit-content;
+  height: fit-content;
   @media (max-width: 700px) {
     max-height: 125px;
   }
