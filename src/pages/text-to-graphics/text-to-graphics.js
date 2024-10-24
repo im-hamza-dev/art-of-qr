@@ -279,7 +279,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                       // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
                     }}
                   >
-                   top{text}
+                   {text}
                   </div>
 
                   {/* Bottom text */}
@@ -292,7 +292,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                     }
                     ref={textRef}
                   >
-                    bottom{text}
+                    {text}
                   </div>
 
                   {/* Left text (rotated) */}
@@ -304,7 +304,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                         textRef?.current?.clientHeight + (spacingBuffer - 10),
                     }}
                   >
-                    left{text}
+                  {text}
                   </div>
 
                   {/* Right text (rotated) */}
@@ -316,7 +316,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                       }
                     }
                   >
-                    right{text}
+                    {text}
                   </div>
                 </div>
               )}
