@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { toPng, toSvg } from "html-to-image";
+import { toPng, toSvg, toCanvas } from "html-to-image";
 import download from "downloadjs";
 import "./text-to-graphics.scss"; // Import the CSS file
 import { useNavigate } from "react-router-dom";
@@ -298,7 +298,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                       // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
                     }}
                   >
-                    {text}
+                   {text}
                   </div>
 
                   {/* Bottom text */}
@@ -323,7 +323,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                         textRef?.current?.clientHeight + (spacingBuffer - 10),
                     }}
                   >
-                    {text}
+                  {text}
                   </div>
 
                   {/* Right text (rotated) */}
