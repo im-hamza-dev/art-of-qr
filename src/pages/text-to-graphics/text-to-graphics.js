@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { toPng, toSvg } from "html-to-image";
+import { toPng, toSvg, toCanvas } from "html-to-image";
 import download from "downloadjs";
 import "./text-to-graphics.scss"; // Import the CSS file
 import { useNavigate } from "react-router-dom";
@@ -82,6 +82,19 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   const downloadPng = () => {
     let graphic = document.getElementById("graphic-parent");
     if (qrRef.current) {
+toCanvas(qrRef.current, { pixelRatio: 2 })
+  .then((canvas) => {
+    const ctx = canvas.getContext('2d');
+    // Further manipulate the canvas context if needed
+    const imgDataUrl = canvas.toDataURL('image/png');
+    
+    const link = document.createElement('a');
+    link.href = imgDataUrl;
+    link.download = 'graphic.png';
+    link.click();
+  });
+return
+      
       toPng(qrRef.current, { pixelRatio:4 })
         .then((dataUrl) => {
           download(dataUrl, `${generateFileName(text)}.png`);
