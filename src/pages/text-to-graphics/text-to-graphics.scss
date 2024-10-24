@@ -47,7 +47,7 @@
   right: 4px;
   rotate: 180deg;
   max-width: 150px;
-
+display: block;
   overflow: hidden;
   white-space: break-spaces;
   word-wrap: break-word;
@@ -60,6 +60,7 @@
   position: absolute;
   bottom: 1px; /* Position relative to square height */
   left: 4px;
+  display: block;
   max-width: 150px;
   overflow: hidden;
   white-space: break-spaces;
@@ -77,6 +78,7 @@
   left: 2px; /* Position relative to square width */
   writing-mode: vertical-rl;
   max-height: 150px;
+  display: block;
   overflow: hidden;
   word-wrap: break-word;
   white-space: break-spaces;
@@ -92,6 +94,7 @@
   text-align: left;
   bottom: 4px;
   right: 2px;
+  display: block;
   max-height: 150px;
   overflow: hidden;
   white-space: break-spaces;
