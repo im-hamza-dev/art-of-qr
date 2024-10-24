@@ -82,7 +82,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   const downloadPng = () => {
     let graphic = document.getElementById("graphic-parent");
     if (graphic) {
-      toPng(graphic)
+      toPng(graphic, { pixelRatio:2 })
         .then((dataUrl) => {
           download(dataUrl, `${generateFileName(text)}.png`);
         })
