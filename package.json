@@ -9,6 +9,7 @@
     "axios": "^1.7.7",
     "downloadjs": "^1.4.7",
     "html-to-image": "^1.11.11",
+    "html2canvas": "^1.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
@@ -16,7 +17,6 @@
     "sass": "^1.79.3",
     "web-vitals": "^2.1.4"
   },
-  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -41,6 +41,4 @@
       "last 1 safari version"
     ]
   }
-  
 }
-

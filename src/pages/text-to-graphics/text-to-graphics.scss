@@ -48,7 +48,7 @@
   rotate: 180deg;
   max-width: 150px;
 
-  overflow: hidden;
+  // overflow: hidden;
   white-space: break-spaces;
   word-wrap: break-word;
   @media (max-width: 700px) {
@@ -61,7 +61,7 @@
   bottom: 0px; /* Position relative to square height */
   left: 3px;
   max-width: 150px;
-  overflow: hidden;
+  // overflow: hidden;
   white-space: break-spaces;
   word-wrap: break-word;
   @media (max-width: 700px) {
@@ -77,7 +77,7 @@
   left: 1px; /* Position relative to square width */
   writing-mode: vertical-rl;
   max-height: 150px;
-  overflow: hidden;
+  // overflow: hidden;
   word-wrap: break-word;
   white-space: break-spaces;
   @media (max-width: 700px) {
@@ -93,7 +93,7 @@
   bottom: 3px;
   right: 1px;
   max-height: 150px;
-  overflow: hidden;
+  // overflow: hidden;
   white-space: break-spaces;
   word-wrap: break-word;
   @media (max-width: 700px) {

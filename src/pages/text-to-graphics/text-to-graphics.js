@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { generateFileName } from "../../utils/helpers";
 import { lettersPerRowMapCenter, lettersPerRowMapLeft } from "./help";
+import html2canvas from "html2canvas";
 
 //font load glitch
 // block space removal
@@ -14,14 +15,13 @@ import { lettersPerRowMapCenter, lettersPerRowMapLeft } from "./help";
 const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   let defaultBoxSize = 60;
   const [printifyStatus, setPrintifyStatus] = useState(false); // Default text
+  const [spacingBuffer, setSpacingBuffer] = useState(5); // Default text
   const qrRef = useRef();
   const textRef = useRef();
   const [boxSize, setBoxSize] = useState(defaultBoxSize); // Default square size
   const navigate = useNavigate();
   const [fontUrl, setFontUrl] = useState("");
   const [loader, setLoader] = useState(false);
-
-  const spacingBuffer = 5;
 
   useEffect(() => {
     if (text.length > 0) {
@@ -79,17 +79,36 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   }, [fontUrl]);
 
   //
-  const downloadPng = () => {
+  const downloadPng = async () => {
     let graphic = document.getElementById("graphic-parent");
     if (graphic) {
+      setSpacingBuffer(0);
+      let existingText = text;
+      onChangeTextHandler("");
+      onChangeTextHandler(existingText);
       toPng(graphic)
         .then((dataUrl) => {
           download(dataUrl, `${generateFileName(text)}.png`);
+          setSpacingBuffer(5);
+          onChangeTextHandler("");
+          onChangeTextHandler(text);
         })
         .catch((err) => {
           console.error("Oops, something went wrong!", err);
+          setSpacingBuffer(5);
         });
     }
+    // const element = document.getElementById('graphic-parent'),
+    // canvas = await html2canvas(qrRef.current),
+    // data = canvas.toDataURL('image/png'),
+    // link = document.createElement('a');
+
+    // link.href = data;
+    // link.download = 'downloaded-image.png';
+
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
   };
 
   // Function to handle SVG download
@@ -120,8 +139,9 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   }, [text]);
 
   const sendToPrintify = async () => {
-    if (qrRef.current) {
-      toPng(qrRef.current)
+    let graphic = document.getElementById("graphic-parent");
+    if (graphic) {
+      toPng(graphic)
         .then(async (dataUrl) => {
           let data_ = dataUrl.replace("data:image/png;base64,", "");
           let body = {
@@ -146,7 +166,6 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
         });
     }
   };
-
 
   const onChangeTextHandler = (value) => {
     let inputWithoutSpace = value.replace(/\s/g, "");
@@ -327,7 +346,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                 Download as PNG
               </button>
               <button onClick={downloadSvg}>Download as SVG</button>
-              <button onClick={sendToPrintify}>Printify</button>
+              <button onClick={sendToPrintify}>Printful</button>
               <button
                 onClick={() => {
                   navigate("/config");
