@@ -21,7 +21,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   const [fontUrl, setFontUrl] = useState("");
   const [loader, setLoader] = useState(false);
 
-  const spacingBuffer = 5;
+  const spacingBuffer = 2;
 
   useEffect(() => {
     if (text.length > 0) {
