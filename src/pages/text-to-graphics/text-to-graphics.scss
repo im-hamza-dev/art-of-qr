@@ -72,9 +72,9 @@
 
 .qr-text-left {
   position: absolute;
-  top:3px;
+  top:4px;
   bottom: 0px; /* Start at the top of the square */
-  left: 1px; /* Position relative to square width */
+  left: 2px; /* Position relative to square width */
   writing-mode: vertical-rl;
   max-height: 150px;
   overflow: hidden;
@@ -90,8 +90,8 @@
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   text-align: left;
-  bottom: 3px;
-  right: 1px;
+  bottom: 4px;
+  right: 2px;
   max-height: 150px;
   overflow: hidden;
   white-space: break-spaces;
