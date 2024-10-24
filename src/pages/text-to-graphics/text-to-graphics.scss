@@ -44,7 +44,7 @@
   position: absolute;
   top: 0px; /* Position relative to square height */
   left: 0px;
-  right: 3px;
+  right: 4px;
   rotate: 180deg;
   max-width: 150px;
 
@@ -74,7 +74,7 @@
   position: absolute;
   top:3px;
   bottom: 0px; /* Start at the top of the square */
-  left: 1px; /* Position relative to square width */
+  left: 0px; /* Position relative to square width */
   writing-mode: vertical-rl;
   max-height: 150px;
   // overflow: hidden;

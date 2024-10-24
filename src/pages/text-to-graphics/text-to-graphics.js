@@ -15,7 +15,7 @@ import html2canvas from "html2canvas";
 const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   let defaultBoxSize = 60;
   const [printifyStatus, setPrintifyStatus] = useState(false); // Default text
-  const [spacingBuffer, setSpacingBuffer] = useState(5); // Default text
+  const [spacingBuffer, setSpacingBuffer] = useState(0); // Default text
   const qrRef = useRef();
   const textRef = useRef();
   const [boxSize, setBoxSize] = useState(defaultBoxSize); // Default square size
@@ -78,24 +78,20 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
     }
   }, [fontUrl]);
 
-  //
   const downloadPng = async () => {
     let graphic = document.getElementById("graphic-parent");
     if (graphic) {
-      setSpacingBuffer(0);
-      let existingText = text;
-      onChangeTextHandler("");
-      onChangeTextHandler(existingText);
+      // let existingText = text;
+      // onChangeTextHandler(existingText.slice(0, -1));
+      // onChangeTextHandler(existingText);
       toPng(graphic)
         .then((dataUrl) => {
           download(dataUrl, `${generateFileName(text)}.png`);
-          setSpacingBuffer(5);
-          onChangeTextHandler("");
-          onChangeTextHandler(text);
+          // onChangeTextHandler(existingText.slice(0, -1));
+          // onChangeTextHandler(existingText);
         })
         .catch((err) => {
           console.error("Oops, something went wrong!", err);
-          setSpacingBuffer(5);
         });
     }
     // const element = document.getElementById('graphic-parent'),
@@ -136,7 +132,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
     if (newSize > defaultBoxSize) {
       setBoxSize(newSize);
     }
-  }, [text]);
+  }, [text, spacingBuffer]);
 
   const sendToPrintify = async () => {
     let graphic = document.getElementById("graphic-parent");
@@ -298,7 +294,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                       // fontSize: `${boxSize / fontFactor}px`, // Dynamically adjust font size
                     }}
                   >
-                   {text}
+                    {text}
                   </div>
 
                   {/* Bottom text */}
@@ -323,7 +319,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                         textRef?.current?.clientHeight + (spacingBuffer - 10),
                     }}
                   >
-                  {text}
+                    {text}
                   </div>
 
                   {/* Right text (rotated) */}
