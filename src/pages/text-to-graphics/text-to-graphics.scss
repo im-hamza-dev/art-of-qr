@@ -38,6 +38,7 @@
   transform: rotate(45deg);
   font-family: 'Megafont';
   line-height: 0.76;
+  box-sizing:border-box;
 }
 
 .qr-text-top {
@@ -51,6 +52,7 @@ display: block;
   overflow: hidden;
   white-space: break-spaces;
   word-wrap: break-word;
+  box-sizing:border-box;
   @media (max-width: 700px) {
     max-width: 125px;
   }
@@ -65,6 +67,7 @@ display: block;
   overflow: hidden;
   white-space: break-spaces;
   word-wrap: break-word;
+  box-sizing:border-box;
   @media (max-width: 700px) {
     max-width: 125px;
   }
@@ -81,6 +84,7 @@ display: block;
   display: block;
   overflow: hidden;
   word-wrap: break-word;
+  box-sizing:border-box;
   white-space: break-spaces;
   @media (max-width: 700px) {
     max-height: 125px;
@@ -98,6 +102,7 @@ display: block;
   max-height: 150px;
   overflow: hidden;
   white-space: break-spaces;
+  box-sizing:border-box;
   word-wrap: break-word;
   @media (max-width: 700px) {
     max-height: 125px;
