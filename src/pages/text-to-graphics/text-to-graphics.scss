@@ -56,6 +56,8 @@ display: block;
   background:red;
   padding: 0px;
   width: fit-content;
+  white-space: nowrap;
+  overflow: hidden;
   @media (max-width: 700px) {
     max-width: 125px;
   }
@@ -74,6 +76,8 @@ display: block;
   background: blue;
   padding: 0px;
     width: fit-content;
+  white-space: nowrap;
+  overflow: hidden;
   @media (max-width: 700px) {
     max-width: 125px;
   }
@@ -95,6 +99,9 @@ display: block;
   background:green;
   padding: 0px;
     height: fit-content;
+white-space: nowrap;
+  overflow: hidden;
+  
   @media (max-width: 700px) {
     max-height: 125px;
   }
@@ -116,6 +123,8 @@ display: block;
   background:purple;
   padding: 0px;
   height: fit-content;
+  white-space: nowrap;
+  overflow: hidden;
   @media (max-width: 700px) {
     max-height: 125px;
   }
