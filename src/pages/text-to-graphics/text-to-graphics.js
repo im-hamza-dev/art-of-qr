@@ -15,7 +15,7 @@ import html2canvas from "html2canvas";
 const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   let defaultBoxSize = 60;
   const [printifyStatus, setPrintifyStatus] = useState(false); // Default text
-  const [spacingBuffer, setSpacingBuffer] = useState(0); // Default text
+  const [spacingBuffer, setSpacingBuffer] = useState(5); // Default text
   const qrRef = useRef();
   const textRef = useRef();
   const [boxSize, setBoxSize] = useState(defaultBoxSize); // Default square size
@@ -81,43 +81,38 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   const downloadPng = async () => {
     let graphic = document.getElementById("graphic-parent");
     if (graphic) {
-      // let existingText = text;
-      // onChangeTextHandler(existingText.slice(0, -1));
-      // onChangeTextHandler(existingText);
-      toPng(graphic)
-        .then((dataUrl) => {
-          download(dataUrl, `${generateFileName(text)}.png`);
-          // onChangeTextHandler(existingText.slice(0, -1));
-          // onChangeTextHandler(existingText);
-        })
-        .catch((err) => {
-          console.error("Oops, something went wrong!", err);
-        });
+      setSpacingBuffer(0);
+
+      setTimeout(() => {
+        toPng(graphic)
+          .then((dataUrl) => {
+            download(dataUrl, `${generateFileName(text)}.png`);
+
+            setSpacingBuffer(5);
+          })
+          .catch((err) => {
+            console.error("Oops, something went wrong!", err);
+          });
+      }, 1000);
     }
-    // const element = document.getElementById('graphic-parent'),
-    // canvas = await html2canvas(qrRef.current),
-    // data = canvas.toDataURL('image/png'),
-    // link = document.createElement('a');
-
-    // link.href = data;
-    // link.download = 'downloaded-image.png';
-
-    // document.body.appendChild(link);
-    // link.click();
-    // document.body.removeChild(link);
   };
 
   // Function to handle SVG download
   const downloadSvg = () => {
     let graphic = document.getElementById("graphic-parent");
     if (graphic) {
-      toSvg(graphic)
-        .then((dataUrl) => {
-          download(dataUrl, `${generateFileName(text)}.svg`);
-        })
-        .catch((err) => {
-          console.error("Oops, something went wrong!", err);
-        });
+      setSpacingBuffer(0);
+
+      setTimeout(() => {
+        toSvg(graphic)
+          .then((dataUrl) => {
+            download(dataUrl, `${generateFileName(text)}.svg`);
+            setSpacingBuffer(5);
+          })
+          .catch((err) => {
+            console.error("Oops, something went wrong!", err);
+          });
+      }, 1000);
     }
   };
   // Calculate the box size dynamically based on text length
@@ -137,29 +132,34 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   const sendToPrintify = async () => {
     let graphic = document.getElementById("graphic-parent");
     if (graphic) {
-      toPng(graphic)
-        .then(async (dataUrl) => {
-          let data_ = dataUrl.replace("data:image/png;base64,", "");
-          let body = {
-            file_name: `${generateFileName(text)}.png`,
-            contents: dataUrl,
-          };
-          try {
-            const response = await axios.post(
-              "https://font-file-server.vercel.app/uploadImage",
-              body
-            );
-            setPrintifyStatus(true);
-            console.log(response);
-            return response.data;
-          } catch (error) {
-            console.error("Error uploading image:", error);
-            setPrintifyStatus(false);
-          }
-        })
-        .catch((err) => {
-          console.error("Oops, something went wrong!", err);
-        });
+      setSpacingBuffer(0);
+
+      setTimeout(() => {
+        toPng(graphic)
+          .then(async (dataUrl) => {
+            setSpacingBuffer(5)
+            let data_ = dataUrl.replace("data:image/png;base64,", "");
+            let body = {
+              file_name: `${generateFileName(text)}.png`,
+              contents: dataUrl,
+            };
+            try {
+              const response = await axios.post(
+                "https://font-file-server.vercel.app/uploadImage",
+                body
+              );
+              setPrintifyStatus(true);
+              console.log(response);
+              return response.data;
+            } catch (error) {
+              console.error("Error uploading image:", error);
+              setPrintifyStatus(false);
+            }
+          })
+          .catch((err) => {
+            console.error("Oops, something went wrong!", err);
+          });
+      }, 1000);
     }
   };
 
