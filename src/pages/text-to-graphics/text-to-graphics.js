@@ -81,7 +81,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   const downloadPng = async () => {
     let graphic = document.getElementById("graphic-parent");
     if (graphic) {
-      setSpacingBuffer(0);
+      setSpacingBuffer(2);
 
       setTimeout(() => {
         toPng(graphic)
@@ -101,7 +101,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   const downloadSvg = () => {
     let graphic = document.getElementById("graphic-parent");
     if (graphic) {
-      setSpacingBuffer(0);
+      setSpacingBuffer(2);
 
       setTimeout(() => {
         toSvg(graphic)
@@ -132,7 +132,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   const sendToPrintify = async () => {
     let graphic = document.getElementById("graphic-parent");
     if (graphic) {
-      setSpacingBuffer(0);
+      setSpacingBuffer(2);
 
       setTimeout(() => {
         toPng(graphic)
