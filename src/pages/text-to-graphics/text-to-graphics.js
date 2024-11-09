@@ -151,8 +151,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
             
             try {
               const response = await axios.post(
-                "http://localhost:3001/uploadImage",
-                //"https://font-file-server.vercel.app/uploadImage",
+              "https://font-file-server.vercel.app/uploadImage",
                 body
               );
               setLoader(false);
