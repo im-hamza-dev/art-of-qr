@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { generateFileName } from "../../utils/helpers";
 import { lettersPerRowMapCenter, lettersPerRowMapLeft } from "./help";
-import html2canvas from "html2canvas";
+import Loading from "../../components/loading";
+
 
 //font load glitch
 // block space removal
@@ -16,6 +17,8 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   let defaultBoxSize = 60;
   const [printifyStatus, setPrintifyStatus] = useState(false); // Default text
   const [spacingBuffer, setSpacingBuffer] = useState(5); // Default text
+  const [mockupUrl,setMockupUrl]=useState();
+  const [errorMsg,setErrorMsg]=useState('');
   const qrRef = useRef();
   const textRef = useRef();
   const [boxSize, setBoxSize] = useState(defaultBoxSize); // Default square size
@@ -130,6 +133,8 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   }, [text, spacingBuffer]);
 
   const sendToPrintify = async () => {
+    setLoader(true);
+    setErrorMsg('');
     let graphic = document.getElementById("graphic-parent");
     if (graphic) {
       setSpacingBuffer(2);
@@ -143,13 +148,24 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
               file_name: `${generateFileName(text)}.png`,
               contents: dataUrl,
             };
+            
             try {
               const response = await axios.post(
-                "https://font-file-server.vercel.app/uploadImage",
+                "http://localhost:3001/uploadImage",
+                //"https://font-file-server.vercel.app/uploadImage",
                 body
               );
-              setPrintifyStatus(true);
+              setLoader(false);
+              if(response.status!=500)
+              {
+                setPrintifyStatus(true);
+                setMockupUrl(response.data.mockupUrl);
+                
+              }
               console.log(response);
+              if(response.status===207 || response.status===500)
+                  setErrorMsg(response.data.error)
+              
               return response.data;
             } catch (error) {
               console.error("Error uploading image:", error);
@@ -203,7 +219,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
         </span>
         <br />
         {text.length > 0 && (
-          <>
+          <div className="formatingDiv">
             {/* format-center */}
             <div className={`flex-graphics  `} id="graphic-parent">
               {config.format === "center" ? (
@@ -350,15 +366,34 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
               >
                 Config
               </button>
-            </div>
-
-            {printifyStatus && (
+              {printifyStatus && (
               <div className="status-message">
-                {"Graphics uploaded to Printify successfully"}
+                {"Graphics uploaded to Printifulsuccessfully"}
               </div>
             )}
-          </>
+            </div>
+            
+
+           
+          </div>
+          
         )}
+        <div className="horizontolLine"></div>
+        <div>Print</div>
+        {loader ? (<>
+        <div style={{color:'red', fontWeight:'normal', fontSize:'15px'}}>Generating Mockup...</div>
+        <Loading/>
+        </> ): ( <></>
+        
+        )}
+        {  mockupUrl  ? (<><img  style={{
+          width: '100%',        
+          maxWidth: '600px',     
+          height: 'auto',         
+          borderRadius: '8px'     
+        }} src={mockupUrl} /></>): (<div  style={{color:'red', fontWeight:'normal', fontSize:'15px'}}>{errorMsg}</div>)
+      }
+
       </div>
     </>
   );
