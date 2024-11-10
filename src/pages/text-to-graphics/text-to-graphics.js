@@ -42,7 +42,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
       try {
         // Use Axios to send a HEAD request to get the font metadata
         const response = await axios.head(
-          "https://cynlnxqqcyuxauxvxcjf.supabase.co/storage/v1/object/public/fonts/user-font.ttf"
+          "https://peflgfeieqtklcpkhszz.supabase.co/storage/v1/object/public/fonts/user-font.ttf"
         );
 
         // Get the 'Last-Modified' header from the response
@@ -50,9 +50,9 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
         const version = Math.floor(Date.now() / 1000); // Convert to timestamp
 
         // Append the version as a query parameter to the font URL
-        const fontUrlWithVersion = `https://cynlnxqqcyuxauxvxcjf.supabase.co/storage/v1/object/public/fonts/user-font.ttf?v=${version}`;
+        const fontUrlWithVersion = `https://peflgfeieqtklcpkhszz.supabase.co/storage/v1/object/public/fonts/user-font.ttf?v=${version}`;
         setFontUrl(fontUrlWithVersion);
-      } catch (error) {
+      } catch (error) { 
         console.error("Error fetching font metadata:", error);
       }
     };
@@ -151,7 +151,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
             
             try {
               const response = await axios.post(
-              "https://font-file-server.vercel.app/uploadImage",
+                "https://font-file-server.vercel.app/uploadImage",
                 body
               );
               setLoader(false);
