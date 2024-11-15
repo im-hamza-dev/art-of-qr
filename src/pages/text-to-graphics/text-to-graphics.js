@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { toPng, toSvg, toCanvas } from "html-to-image";
 import download from "downloadjs";
+import { MdErrorOutline } from "react-icons/md";
 import "./text-to-graphics.scss"; // Import the CSS file
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -17,8 +18,8 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   let defaultBoxSize = 60;
   const [printifyStatus, setPrintifyStatus] = useState(false); // Default text
   const [spacingBuffer, setSpacingBuffer] = useState(5); // Default text
-  const [mockupUrl,setMockupUrl]=useState();
-  const [errorMsg,setErrorMsg]=useState('');
+  const [mockupUrl, setMockupUrl] = useState([]);
+  const [errorMsg, setErrorMsg] = useState('');
   const qrRef = useRef();
   const textRef = useRef();
   const [boxSize, setBoxSize] = useState(defaultBoxSize); // Default square size
@@ -52,7 +53,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
         // Append the version as a query parameter to the font URL
         const fontUrlWithVersion = `https://peflgfeieqtklcpkhszz.supabase.co/storage/v1/object/public/fonts/user-font.ttf?v=${version}`;
         setFontUrl(fontUrlWithVersion);
-      } catch (error) { 
+      } catch (error) {
         console.error("Error fetching font metadata:", error);
       }
     };
@@ -144,27 +145,28 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
           .then(async (dataUrl) => {
             setSpacingBuffer(5)
             let data_ = dataUrl.replace("data:image/png;base64,", "");
+            console.log(dataUrl);
             let body = {
               file_name: `${generateFileName(text)}.png`,
               contents: dataUrl,
             };
-            
+
             try {
               const response = await axios.post(
+                // "http://localhost:3001/uploadImage",
                 "https://font-file-server.vercel.app/uploadImage",
                 body
               );
               setLoader(false);
-              if(response.status!=500)
-              {
+              if (response.status != 500) {
                 setPrintifyStatus(true);
-                setMockupUrl(response.data.mockupUrl);
-                
+                setMockupUrl(response.data.successfulUrls);
+
               }
               console.log(response);
-              if(response.status===207 || response.status===500)
-                  setErrorMsg(response.data.error)
-              
+              if (response.status === 207 || response.status === 500)
+                setErrorMsg(response.data.error)
+
               return response.data;
             } catch (error) {
               console.error("Error uploading image:", error);
@@ -192,9 +194,8 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
     let spacingArr = lettersPerRowMap[lettersWithoutLineBreak?.length];
     let lettersWithNewLineBreak = "";
     lettersWithoutLineBreak?.split("").forEach((element, index) => {
-      lettersWithNewLineBreak = `${lettersWithNewLineBreak}${element}${
-        spacingArr?.includes(index + 1) ? "\n" : ""
-      }`;
+      lettersWithNewLineBreak = `${lettersWithNewLineBreak}${element}${spacingArr?.includes(index + 1) ? "\n" : ""
+        }`;
     });
     console.log("final:", lettersWithNewLineBreak);
     setText(lettersWithNewLineBreak);
@@ -366,32 +367,38 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                 Config
               </button>
               {printifyStatus && (
-              <div className="status-message">
-                {"Graphics uploaded to Printifulsuccessfully"}
-              </div>
-            )}
+                <div className="status-message">
+                  {"Graphics uploaded to Printifulsuccessfully"}
+                </div>
+              )}
             </div>
-            
 
-           
+
+
           </div>
-          
+
         )}
         <div className="horizontolLine"></div>
         <div>Print</div>
         {loader ? (<>
-        <div style={{color:'red', fontWeight:'normal', fontSize:'15px'}}>Generating Mockup...</div>
-        <Loading/>
-        </> ): ( <></>
-        
+          <div style={{ color: 'red', fontWeight: 'normal', fontSize: '15px' }}>Generating Mockup...</div>
+          <Loading />
+        </>) : (<></>
+
         )}
-        {  mockupUrl  ? (<><img  style={{
-          width: '100%',        
-          maxWidth: '600px',     
-          height: 'auto',         
-          borderRadius: '8px'     
-        }} src={mockupUrl} /></>): (<div  style={{color:'red', fontWeight:'normal', fontSize:'15px'}}>{errorMsg}</div>)
-      }
+        {mockupUrl.length ? (<div className="images-grid">{mockupUrl.map((url) => {
+          return (url.mockupUrl ? (<img style={{
+            width: '100%',
+            maxWidth: '400px',
+            height: 'auto',
+            borderRadius: '8px',
+            margin: '5px'
+          }} src={url.mockupUrl} />) : (<div className="error-container">
+            <MdErrorOutline className="error-icon" />
+            <span className="error-text">Unable to load image...</span>
+          </div>))
+        })}</div>) : (<div style={{ color: 'red', fontWeight: 'normal', fontSize: '15px' }}>{errorMsg}</div>)
+        }
 
       </div>
     </>

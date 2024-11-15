@@ -219,3 +219,27 @@ button {
   padding: 0.25%;
   background-color: #5CB3FF;
 }
+.image-carousal{
+  display: flex;
+  flex-direction: row;
+  
+}
+.error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  color: #ff4d4f;
+}
+
+.error-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.error-text {
+  font-size: 18px;
+  font-weight: bold;
+}
