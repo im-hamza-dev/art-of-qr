@@ -175,8 +175,10 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
 
               }
               console.log(mockupUrl);
-              if (response.status === 207 || response.status === 500)
+              if (response.status === 207 || response.status === 500){
+                setLoader(false);
                 setErrorMsg(response.data.error)
+              }
 
               return response.data;
             } catch (error) {
