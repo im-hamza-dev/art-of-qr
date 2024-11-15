@@ -9,7 +9,6 @@ import { generateFileName } from "../../utils/helpers";
 import { lettersPerRowMapCenter, lettersPerRowMapLeft } from "./help";
 import Loading from "../../components/loading";
 
-
 //font load glitch
 // block space removal
 // input with space and input without space adjustments
@@ -19,7 +18,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   const [printifyStatus, setPrintifyStatus] = useState(false); // Default text
   const [spacingBuffer, setSpacingBuffer] = useState(5); // Default text
   const [mockupUrl, setMockupUrl] = useState([]);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
   const qrRef = useRef();
   const textRef = useRef();
   const [boxSize, setBoxSize] = useState(defaultBoxSize); // Default square size
@@ -135,7 +134,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
 
   const sendToPrintify = async () => {
     setLoader(true);
-    setErrorMsg('');
+    setErrorMsg("");
     let graphic = document.getElementById("graphic-parent");
     if (graphic) {
       setSpacingBuffer(2);
@@ -143,7 +142,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
       setTimeout(() => {
         toPng(graphic)
           .then(async (dataUrl) => {
-            setSpacingBuffer(5)
+            setSpacingBuffer(5);
             let data_ = dataUrl.replace("data:image/png;base64,", "");
             console.log(dataUrl);
             let body = {
@@ -161,11 +160,10 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
               if (response.status != 500) {
                 setPrintifyStatus(true);
                 setMockupUrl(response.data.successfulUrls);
-
               }
               console.log(response);
               if (response.status === 207 || response.status === 500)
-                setErrorMsg(response.data.error)
+                setErrorMsg(response.data.error);
 
               return response.data;
             } catch (error) {
@@ -194,8 +192,9 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
     let spacingArr = lettersPerRowMap[lettersWithoutLineBreak?.length];
     let lettersWithNewLineBreak = "";
     lettersWithoutLineBreak?.split("").forEach((element, index) => {
-      lettersWithNewLineBreak = `${lettersWithNewLineBreak}${element}${spacingArr?.includes(index + 1) ? "\n" : ""
-        }`;
+      lettersWithNewLineBreak = `${lettersWithNewLineBreak}${element}${
+        spacingArr?.includes(index + 1) ? "\n" : ""
+      }`;
     });
     console.log("final:", lettersWithNewLineBreak);
     setText(lettersWithNewLineBreak);
@@ -372,34 +371,50 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                 </div>
               )}
             </div>
-
-
-
           </div>
-
         )}
         <div className="horizontolLine"></div>
         <div>Print</div>
-        {loader ? (<>
-          <div style={{ color: 'red', fontWeight: 'normal', fontSize: '15px' }}>Generating Mockup...</div>
-          <Loading />
-        </>) : (<></>
-
+        {loader ? (
+          <>
+            <div
+              style={{ color: "red", fontWeight: "normal", fontSize: "15px" }}
+            >
+              Generating Mockup...
+            </div>
+            <Loading />
+          </>
+        ) : (
+          <></>
         )}
-        {mockupUrl.length ? (<div className="images-grid">{mockupUrl.map((url) => {
-          return (url.mockupUrl ? (<img style={{
-            width: '100%',
-            maxWidth: '400px',
-            height: 'auto',
-            borderRadius: '8px',
-            margin: '5px'
-          }} src={url.mockupUrl} />) : (<div className="error-container">
-            <MdErrorOutline className="error-icon" />
-            <span className="error-text">Unable to load image...</span>
-          </div>))
-        })}</div>) : (<div style={{ color: 'red', fontWeight: 'normal', fontSize: '15px' }}>{errorMsg}</div>)
-        }
-
+        {mockupUrl?.length ? (
+          <div className="images-grid">
+            {mockupUrl?.map((url) => {
+              return url.mockupUrl ? (
+                <img
+                  style={{
+                    width: "100%",
+                    maxWidth: "400px",
+                    height: "auto",
+                    borderRadius: "8px",
+                    margin: "5px",
+                  }}
+                  alt=""
+                  src={url.mockupUrl}
+                />
+              ) : (
+                <div className="error-container">
+                  <MdErrorOutline className="error-icon" />
+                  <span className="error-text">Unable to load image...</span>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div style={{ color: "red", fontWeight: "normal", fontSize: "15px" }}>
+            {errorMsg}
+          </div>
+        )}
       </div>
     </>
   );
