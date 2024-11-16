@@ -172,7 +172,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                 setLoderMsg("Succesfuly Created mockups Now Getting Images...");
                 const payload = encodeURIComponent(JSON.stringify(response.data.successfulMockups));
                 console.log(payload);
-                await timer(3000)
+                await timer(9000)
                 const successfulUrls = await axios.get(`https://font-file-server.vercel.app/getMockup?payload=${payload}`);
                 setLoader(false);
                 if (successfulUrls.status == 200)
