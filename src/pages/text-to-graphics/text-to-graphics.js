@@ -10,6 +10,7 @@ import { lettersPerRowMapCenter, lettersPerRowMapLeft } from "./help";
 import Loading from "../../components/loading";
 
 
+
 //font load glitch
 // block space removal
 // input with space and input without space adjustments
@@ -26,7 +27,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
   const navigate = useNavigate();
   const [fontUrl, setFontUrl] = useState("");
   const [loader, setLoader] = useState(false);
-  const [loderMsg,setLoderMsg]=useState("");
+  const [loderMsg, setLoderMsg] = useState("");
 
   useEffect(() => {
     if (text.length > 0) {
@@ -134,7 +135,10 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
     }
   }, [text, spacingBuffer]);
 
+
+
   const sendToPrintify = async () => {
+    setMockupUrl([]);
     setLoderMsg("Generating Mockup...");
     setLoader(true);
     setErrorMsg('');
@@ -148,34 +152,37 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
             setSpacingBuffer(5)
             let data_ = dataUrl.replace("data:image/png;base64,", "");
             console.log(dataUrl);
-            let body = {
+            let body;
+            ;
+            body = {
               file_name: `${generateFileName(text)}.png`,
               contents: dataUrl,
             };
 
+
             try {
               const response = await axios.post(
-                 //"http://localhost:3001/uploadImage",
-                "https://font-file-server.vercel.app/uploadImage",
+                "http://localhost:3001/uploadImage",
+                //"https://font-file-server.vercel.app/uploadImage",
                 body
               );
-              if (response.status ===200) {
+              if (response.status === 200) {
                 setPrintifyStatus(true);
                 setLoderMsg("Succesfuly Created mockups Now Getting Images...");
-                const payload=encodeURIComponent(JSON.stringify(response.data.successfulMockups));
+                const payload = encodeURIComponent(JSON.stringify(response.data.successfulMockups));
                 console.log(payload);
-                const successfulUrls=await axios.get(`https://font-file-server.vercel.app/getMockup?payload=${payload}`);
+                const successfulUrls = await axios.get(`http://localhost:3001/getMockup?payload=${payload}`);
                 setLoader(false);
-                if(successfulUrls.status==200)
-                     setMockupUrl(successfulUrls.data);
+                if (successfulUrls.status == 200)
+                  setMockupUrl(successfulUrls.data);
                 else
                   setErrorMsg(successfulUrls.message);
-                
-                  console.log(successfulUrls);
+
+                console.log(successfulUrls);
 
               }
               console.log(mockupUrl);
-              if (response.status === 207 || response.status === 500){
+              if (response.status != 200) {
                 setLoader(false);
                 setErrorMsg(response.data.error)
               }
@@ -183,6 +190,8 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
               return response.data;
             } catch (error) {
               console.error("Error uploading image:", error);
+              setLoader(false);
+              setErrorMsg(error.message);
               setPrintifyStatus(false);
             }
           })
@@ -399,7 +408,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
         </>) : (<></>
 
         )}
-        {mockupUrl?.length ? (<div className="images-grid">{mockupUrl?.map((url,i) => {
+        {mockupUrl?.length ? (<div className="images-grid">{mockupUrl?.map((url, i) => {
           return (url.mockupUrl ? (<img key={i} style={{
             width: '100%',
             maxWidth: '400px',
