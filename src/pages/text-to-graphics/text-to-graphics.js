@@ -392,7 +392,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
               </button>
               {printifyStatus && (
                 <div className="status-message">
-                  {"Graphics uploaded to Printifulsuccessfully"}
+                  {"Graphics uploaded to Printful Successfully"}
                 </div>
               )}
             </div>
