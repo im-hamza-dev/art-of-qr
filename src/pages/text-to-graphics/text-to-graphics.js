@@ -90,7 +90,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
       setSpacingBuffer(2);
 
       setTimeout(() => {
-        toPng(graphic, { quality: 0.6 })
+        toPng(graphic, { quality: 0.3 })
           .then((dataUrl) => {
             download(dataUrl, `${generateFileName(text)}.png`);
 
@@ -147,7 +147,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
       setSpacingBuffer(2);
 
       setTimeout(() => {
-        toPng(graphic, { quality: 0.6 })
+        toPng(graphic, { quality: 0.3 })
           .then(async (dataUrl) => {
             setSpacingBuffer(5)
             let data_ = dataUrl.replace("data:image/png;base64,", "");
