@@ -162,8 +162,8 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
 
             try {
               const response = await axios.post(
-                "http://localhost:3001/uploadImage",
-                //"https://font-file-server.vercel.app/uploadImage",
+                //"http://localhost:3001/uploadImage",
+                "https://font-file-server.vercel.app/uploadImage",
                 body
               );
               if (response.status === 200) {
@@ -171,7 +171,7 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
                 setLoderMsg("Succesfuly Created mockups Now Getting Images...");
                 const payload = encodeURIComponent(JSON.stringify(response.data.successfulMockups));
                 console.log(payload);
-                const successfulUrls = await axios.get(`http://localhost:3001/getMockup?payload=${payload}`);
+                const successfulUrls = await axios.get(`https://font-file-server.vercel.app/getMockup?payload=${payload}`);
                 setLoader(false);
                 if (successfulUrls.status == 200)
                   setMockupUrl(successfulUrls.data);
