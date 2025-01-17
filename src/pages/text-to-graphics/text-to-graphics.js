@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { toPng, toSvg, toCanvas } from "html-to-image";
+import { changeDpiDataUrl, changeDpiBlob } from 'dpi-tools';
 import download from "downloadjs";
 import { MdErrorOutline } from "react-icons/md";
 import "./text-to-graphics.scss"; // Import the CSS file
@@ -84,15 +85,26 @@ const TextToGraphics = ({ config, text, setText, textInput, setTextInput }) => {
     }
   }, [fontUrl]);
 
+
+
+
+ 
+
   const downloadPng = async () => {
     let graphic = document.getElementById("graphic-parent");
     if (graphic) {
       setSpacingBuffer(2);
 
       setTimeout(() => {
-        toPng(graphic, { quality: 0.3 })
+        toPng(graphic, {
+          quality: 1, // Use the best quality for a clearer image
+          canvasWidth: 3840, // Scale width for 300 PPI
+          canvasHeight: 2160, // Scale height for 300 PPI
+          
+        })
           .then((dataUrl) => {
-            download(dataUrl, `${generateFileName(text)}.png`);
+            const updatedURL=changeDpiDataUrl(dataUrl,300);
+            download(updatedURL, `${generateFileName(text)}.png`);
 
             setSpacingBuffer(5);
           })

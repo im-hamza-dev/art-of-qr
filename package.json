@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
     "downloadjs": "^1.4.7",
+    "dpi-tools": "^1.0.7",
     "html-to-image": "^1.11.11",
     "html2canvas": "^1.4.1",
     "pica": "^9.0.1",
@@ -17,6 +18,7 @@
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
     "sass": "^1.79.3",
+    "sharp": "^0.33.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
